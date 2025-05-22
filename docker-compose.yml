@@ -1,10 +1,12 @@
-version: '3.9'
 services:
   supabase:
-    image: supabase/cli:latest
-    command: start
+    build:
+      context: .
+      dockerfile: Dockerfile.supabase
     volumes:
-      - ./supabase:/workspace/supabase
+      - .:/app
+    working_dir: /app
+    entrypoint: ["supabase"]
     env_file:
       - .env
     ports:
@@ -16,8 +18,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
-        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+        - VITE_SUPABASE_URL=http://localhost:54321
+        - VITE_SUPABASE_ANON_KEY=service-anon-test-key
     env_file:
       - .env
     ports:
