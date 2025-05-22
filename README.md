@@ -116,8 +116,8 @@ Channel adapters send incoming webhooks to the `message-handler` edge function
 so new messages appear instantly for agents.
 
 When no human agent is assigned to a conversation, the
-[`ai-respond.ts`](./supabase/functions/ai-respond.ts) function is invoked
-automatically to generate a reply using OpenAI.
+[`route-to-ai.ts`](./supabase/functions/route-to-ai.ts) function (the MCP
+Agent) is invoked to generate a reply using OpenAI.
 
 ## Folder Structure
 
@@ -173,6 +173,7 @@ When you're ready to deploy:
 supabase functions deploy ai-respond
 supabase functions deploy channel-webhook
 supabase functions deploy message-handler
+supabase functions deploy route-to-ai
 ```
 
 Ensure your Supabase URL and keys are configured in your environment before deploying.
