@@ -10,7 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@gluestack-ui/themed": "0.1.55",
+    "@gluestack-ui/themed": "0.1.40",
     "@supabase/supabase-js": "^2.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"

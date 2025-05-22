@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   supabase:
     build:
@@ -13,16 +15,23 @@ services:
       - "54321:54321"
       - "54322:54322"
       - "8000:8000"
+
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
-        - VITE_SUPABASE_URL=http://localhost:54321
-        - VITE_SUPABASE_ANON_KEY=service-anon-test-key
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+    volumes:
+      - ./web:/app/web
+      - /app/web/node_modules  # Prevent overwriting container node_modules
+    working_dir: /app/web
+    command: npm run dev
     env_file:
       - .env
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - supabase
+    restart: unless-stopped
