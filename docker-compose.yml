@@ -1,5 +1,16 @@
 version: '3.9'
 services:
+  supabase:
+    image: supabase/cli:latest
+    command: start
+    volumes:
+      - ./supabase:/workspace/supabase
+    env_file:
+      - .env
+    ports:
+      - "54321:54321"
+      - "54322:54322"
+      - "8000:8000"
   frontend:
     build:
       context: .
@@ -11,3 +22,5 @@ services:
       - .env
     ports:
       - "3000:80"
+    depends_on:
+      - supabase

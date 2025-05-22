@@ -108,6 +108,9 @@ For the React app, copy `.env.example` to `.env` in the project root and set:
 - `VITE_SUPABASE_URL` – your Supabase project URL
 - `VITE_SUPABASE_ANON_KEY` – anonymous key for the client
 
+You can run `./init.sh` to create the required `.env` files automatically and
+apply the database schema if the Supabase CLI is installed.
+
 ## Channel Adapters and Realtime Updates
 
 Channel adapters send incoming webhooks to the `message-handler` edge function
@@ -148,14 +151,16 @@ npm run dev
 
 This launches the app with Vite at `http://localhost:5173`.
 
-Alternatively, build and run the frontend with Docker:
+Alternatively, build and run everything with Docker Compose. This will start a
+local Supabase stack alongside the frontend:
 
 ```bash
 cp .env.example .env # fill in Supabase keys
 docker compose up --build
 ```
 
-The container listens on `http://localhost:3000`.
+The frontend is available at `http://localhost:3000` and Supabase exposes its
+services on ports `54321`, `54322` and `8000`.
 
 ### Deploying edge functions
 
