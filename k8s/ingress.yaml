@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: faladesk
+  namespace: faladesk
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+          - path: /api/route-to-ai
+            pathType: Prefix
+            backend:
+              service:
+                name: ai-router
+                port:
+                  number: 8787
+          - path: /api/receive-whatsapp
+            pathType: Prefix
+            backend:
+              service:
+                name: whatsapp-adapter
+                port:
+                  number: 3000
+          - path: /api/receive-email
+            pathType: Prefix
+            backend:
+              service:
+                name: email-adapter
+                port:
+                  number: 3000

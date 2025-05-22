@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-functions
+  namespace: faladesk
+  labels:
+    app: faladesk
+    component: edge-functions
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faladesk
+      component: edge-functions
+  template:
+    metadata:
+      labels:
+        app: faladesk
+        component: edge-functions
+    spec:
+      containers:
+        - name: edge-functions
+          image: supabase/edge-runtime:v1.0.0
+          ports:
+            - containerPort: 54321
+          env:
+            - name: SUPABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: faladesk-config
+                  key: VITE_SUPABASE_URL
+            - name: SUPABASE_SERVICE_ROLE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: faladesk-secrets
+                  key: SUPABASE_SERVICE_ROLE_KEY
+          volumeMounts:
+            - name: functions
+              mountPath: /home/deno/functions
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+      volumes:
+        - name: functions
+          emptyDir: {}
