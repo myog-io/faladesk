@@ -69,7 +69,6 @@ flowchart TD
 
     WorkflowEngine -.-> DB
 ```
-```
 
 ## Database Schema
 
