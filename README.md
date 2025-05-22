@@ -103,6 +103,11 @@ Edit the new `.env` file and set the following variables:
 - `SUPABASE_ANON_KEY` – anonymous key
 - `OPENAI_API_KEY` – OpenAI API token
 
+For the React app, copy `.env.example` to `.env` in the project root and set:
+
+- `VITE_SUPABASE_URL` – your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` – anonymous key for the client
+
 ## Channel Adapters and Realtime Updates
 
 Channel adapters send incoming webhooks to the `message-handler` edge function
@@ -142,6 +147,15 @@ npm run dev
 ```
 
 This launches the app with Vite at `http://localhost:5173`.
+
+Alternatively, build and run the frontend with Docker:
+
+```bash
+cp .env.example .env # fill in Supabase keys
+docker compose up --build
+```
+
+The container listens on `http://localhost:3000`.
 
 ### Deploying edge functions
 
