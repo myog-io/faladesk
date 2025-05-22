@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Input, InputField, VStack, Text } from 'gluestack-ui'
+import { Button, Input, InputField, VStack, Text } from '@gluestack-ui/themed'
 import { useAuth } from '../lib/AuthProvider'
 
 export default function Login() {

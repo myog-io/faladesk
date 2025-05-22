@@ -8,7 +8,8 @@ create table if not exists organizations (
 
 
 create table if not exists users (
-  id uuid primary key references auth.users on delete cascade,
+  id uuid primary key default gen_random_uuid(),
+  supabase_uid uuid not null references auth.users on delete cascade,
   email text not null,
   name text,
   avatar_url text,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box, Button, Text, VStack } from 'gluestack-ui'
+import { Box, Button, Text, VStack } from '@gluestack-ui/themed'
 
 interface Message {
   id: string
