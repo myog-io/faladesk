@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatsapp-adapter
+  namespace: faladesk
+  labels:
+    app: faladesk
+    component: whatsapp-adapter
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faladesk
+      component: whatsapp-adapter
+  template:
+    metadata:
+      labels:
+        app: faladesk
+        component: whatsapp-adapter
+    spec:
+      containers:
+        - name: whatsapp-adapter
+          image: your-docker-registry/faladesk-whatsapp-adapter:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: TWILIO_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: faladesk-secrets
+                  key: TWILIO_AUTH_TOKEN
+            - name: D360_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: faladesk-secrets
+                  key: D360_API_KEY
+            - name: SUPABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: faladesk-config
+                  key: VITE_SUPABASE_URL
+            - name: SUPABASE_SERVICE_ROLE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: faladesk-secrets
+                  key: SUPABASE_SERVICE_ROLE_KEY
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
