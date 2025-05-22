@@ -1,4 +1,4 @@
-import { Heading, Text, VStack } from 'gluestack-ui'
+import { Heading, Text, VStack } from '@gluestack-ui/themed'
 
 export default function Landing() {
   return (
