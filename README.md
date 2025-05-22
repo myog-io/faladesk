@@ -71,6 +71,34 @@ flowchart TD
 ```
 ```
 
+## Database Schema
+
+The database schema lives in [`supabase/schema.sql`](./supabase/schema.sql) and
+defines a minimal set of tables:
+
+- **organizations** – tenant companies using the platform.
+- **memberships** – links `auth.users` to organizations.
+- **conversations** – support threads tied to an organization and channel.
+- **messages** – individual messages within a conversation.
+- **workflows** – automation rules that can trigger actions.
+
+## Deploying the Schema
+
+Run `supabase db push` from the `supabase` directory to apply the schema to your
+Supabase project. If you prefer migrations, commit the generated SQL with
+`supabase db commit` and apply it in your deployment pipeline.
+
+## Channel Adapters and Realtime Updates
+
+Channel adapters send incoming webhooks to the `message-handler` edge function
+(`supabase/functions/channel-webhook.ts`). This function persists messages to the
+`messages` table. The React frontend subscribes to realtime changes on that table
+so new messages appear instantly for agents.
+
+When no human agent is assigned to a conversation, the
+[`ai-respond.ts`](./supabase/functions/ai-respond.ts) function is invoked
+automatically to generate a reply using OpenAI.
+
 ## Folder Structure
 
 - [`/apps/frontend`](./apps/frontend) – React interface for agents and customers
