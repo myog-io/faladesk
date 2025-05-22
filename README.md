@@ -108,6 +108,46 @@ automatically to generate a reply using OpenAI.
 - [`/k8s`](./k8s) – Kubernetes manifests
 - [`/docker`](./docker) – Dockerfiles and Compose configuration
 
+## Running the React Interface and Edge Functions
+
+### Prerequisites
+
+- **Node.js** 18 or newer
+- **Supabase CLI** installed globally (`npm install -g supabase`)
+- **Deno** (used for Supabase edge functions)
+
+### Start the React interface
+
+The React agent console lives in [`web/`](./web). To run it locally:
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+This launches the app with Vite at `http://localhost:5173`.
+
+### Deploying edge functions
+
+Supabase edge functions reside in [`supabase/functions`](./supabase/functions).
+To serve them locally:
+
+```bash
+cd supabase
+supabase functions serve --no-verify-jwt
+```
+
+When you're ready to deploy:
+
+```bash
+supabase functions deploy ai-respond
+supabase functions deploy channel-webhook
+supabase functions deploy message-handler
+```
+
+Ensure your Supabase URL and keys are configured in your environment before deploying.
+
 ## License
 
 Faladesk is released under the Business Source License 1.1. It is free for personal or internal business use. Commercial resale or providing it as a service requires a separate license. See [`LICENSE`](./LICENSE) for details.
