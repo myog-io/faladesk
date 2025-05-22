@@ -16,6 +16,7 @@ ARG VITE_SUPABASE_ANON_KEY
 ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
 ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
 
+RUN cd web && npm install --legacy-peer-deps
 RUN cd web && npm install && npm run build
 
 # Production stage
