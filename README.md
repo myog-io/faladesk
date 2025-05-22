@@ -101,12 +101,12 @@ automatically to generate a reply using OpenAI.
 
 ## Folder Structure
 
-- [`/apps/frontend`](./apps/frontend) – React interface for agents and customers
-- [`/supabase`](./supabase) – Edge functions and SQL migrations
-- [`/functions`](./functions) – Channel adapter webhooks (e.g., WhatsApp, Email)
-- [`/docs`](./docs) – Diagrams and documentation
-- [`/k8s`](./k8s) – Kubernetes manifests
-- [`/docker`](./docker) – Dockerfiles and Compose configuration
+- [`web/`](./web) – React interface for agents and customers
+- [`supabase/`](./supabase) – Edge functions and SQL migrations
+- `functions/` – Channel adapter webhooks (planned)
+- `docs/` – Diagrams and documentation (planned)
+- `k8s/` – Kubernetes manifests (planned)
+- `docker/` – Dockerfiles and Compose configuration (planned)
 
 ## License
 
