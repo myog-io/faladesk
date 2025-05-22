@@ -177,6 +177,22 @@ supabase functions deploy message-handler
 
 Ensure your Supabase URL and keys are configured in your environment before deploying.
 
+## Testing
+
+Vitest is used for frontend unit and integration tests located in `apps/frontend/tests`. Deno's built-in `deno test` runs the edge function tests under `supabase/functions/tests`.
+
+Run all tests:
+
+```bash
+# Frontend
+cd web && npm install
+npm run test
+
+# Edge functions
+cd ../supabase/functions
+deno test -A
+```
+
 ## License
 
 Faladesk is released under the Business Source License 1.1. It is free for personal or internal business use. Commercial resale or providing it as a service requires a separate license. See [`LICENSE`](./LICENSE) for details.
