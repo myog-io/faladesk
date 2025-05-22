@@ -15,7 +15,7 @@ export default function Login() {
   }
 
   return (
-    <VStack as="form" space="md" onSubmit={handleSubmit}">
+    <VStack as="form" space="md" onSubmit={handleSubmit}>
       <Input>
         <InputField
           placeholder="you@example.com"
