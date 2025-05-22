@@ -88,6 +88,22 @@ Run `supabase db push` from the `supabase` directory to apply the schema to your
 Supabase project. If you prefer migrations, commit the generated SQL with
 `supabase db commit` and apply it in your deployment pipeline.
 
+## Environment Variables
+
+Copy `supabase/.env.example` to `supabase/.env` and provide your own
+credentials for Supabase and OpenAI:
+
+```bash
+cp supabase/.env.example supabase/.env
+```
+
+Edit the new `.env` file and set the following variables:
+
+- `SUPABASE_URL` – your Supabase project URL
+- `SUPABASE_SERVICE_ROLE_KEY` – service role key
+- `SUPABASE_ANON_KEY` – anonymous key
+- `OPENAI_API_KEY` – OpenAI API token
+
 ## Channel Adapters and Realtime Updates
 
 Channel adapters send incoming webhooks to the `message-handler` edge function
