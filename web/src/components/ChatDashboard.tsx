@@ -25,6 +25,9 @@ export default function ChatDashboard() {
       </button>
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
       <aside style={{ width: '30%', borderRight: '1px solid #ddd', overflowY: 'auto' }}>
+        <div style={{ padding: '10px', borderBottom: '1px solid #f0f0f0' }}>
+          <Link to="/invite">Invite teammate</Link>
+        </div>
         {conversations.map((c) => (
           <div key={c.id} style={{ padding: '10px', borderBottom: '1px solid #f0f0f0' }}>
             <Link to={`/chat/${c.id}`}>{c.customer_name}</Link>

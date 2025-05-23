@@ -50,10 +50,19 @@ export function createMockClient(data: {
               })
             })
           }
+        case 'invites':
+          return {
+            insert: (vals: any) => Promise.resolve({ data: vals, error: null })
+          }
         default:
           return {
             select: () => ({ single: () => Promise.resolve({ data: {} }) })
           }
+      }
+    },
+    auth: {
+      admin: {
+        inviteUserByEmail: async (_email: string) => ({ data: {}, error: null })
       }
     },
     channel() {
