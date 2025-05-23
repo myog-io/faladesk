@@ -34,8 +34,10 @@ export function createMockClient(data: {
               })
             }),
             insert: (vals: any) => ({
-              select: () =>
-                Promise.resolve({ data: { id: 'new-id', ...vals } }),
+              select: () => ({
+                single: () =>
+                  Promise.resolve({ data: { id: 'new-id', ...vals } })
+              }),
               single: () =>
                 Promise.resolve({ data: { id: 'new-id', ...vals } })
             })
