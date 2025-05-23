@@ -4,7 +4,8 @@ import { supabase } from './supabase'
 export interface RealtimeMessage {
   id: string
   sender: string
-  content: string
+  content: string | null
+  metadata: Record<string, any> | null
   created_at: string
   metadata?: any
 }
@@ -20,7 +21,8 @@ export function useRealtimeMessages(conversationId: string | null) {
     const fetchMessages = async () => {
       const { data } = await supabase
         .from('messages')
-        .select('id, sender, content, created_at, metadata')
+
+        .select('id, sender, content, metadata, created_at')
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: true })
 

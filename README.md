@@ -17,6 +17,7 @@ Faladesk is an open-source, multi-tenant SaaS platform for customer support (SAC
 - Channel adapters for WhatsApp (Twilio, 360Dialog) and Email
 - MCP agents using OpenAI for automated support
 - Realtime syncing with Supabase subscriptions
+- Admins can invite teammates by email
 - Optional customer portal for viewing ticket history
 - Custom workflow rules (e.g., auto-response, escalation triggers)
 - Designed for Kubernetes deployment
@@ -76,10 +77,11 @@ The database schema lives in [`supabase/schema.sql`](./supabase/schema.sql) and
 defines a minimal set of tables:
 
 - **organizations** – tenant companies using the platform.
-- **memberships** – links `auth.users` to organizations.
+- **users** – platform users tied to an organization.
 - **conversations** – support threads tied to an organization and channel.
 - **messages** – individual messages within a conversation.
 - **workflows** – automation rules that can trigger actions.
+- **invites** – pending invitations for new users.
 
 ## Deploying the Schema
 
@@ -179,9 +181,24 @@ supabase functions deploy ai-respond
 supabase functions deploy channel-webhook
 supabase functions deploy message-handler
 supabase functions deploy route-to-ai
+supabase functions deploy invite-user
 ```
 
 Ensure your Supabase URL and keys are configured in your environment before deploying.
+
+## Public Landing Page
+
+A minimal Node server under `server/` renders a search‑engine friendly landing
+page at `/`. The markup lives in `server/landing.html`. After building the React
+interface you can launch it with:
+
+```bash
+npm run build --prefix web
+node server/server.js
+```
+
+Visit `http://localhost:8080` to view the marketing page. The "Create Account"
+button links to the React application under `/app`.
 
 ## Testing
 
