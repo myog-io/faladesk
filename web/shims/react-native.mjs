@@ -2,6 +2,7 @@ export const BackHandler = {}
 export const Platform = {}
 export const StatusBar = {}
 export const View = () => null
+export const ActivityIndicator = () => null
 export const StyleSheet = { create: () => ({}) }
 export const Dimensions = { get: () => ({}) }
 export const I18nManager = {}
@@ -14,6 +15,7 @@ export default {
   Platform,
   StatusBar,
   View,
+  ActivityIndicator,
   StyleSheet,
   Dimensions,
   I18nManager,

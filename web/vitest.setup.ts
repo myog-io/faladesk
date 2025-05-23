@@ -3,6 +3,7 @@ import '@testing-library/jest-dom'
 vi.mock('react-native', () => ({
   View: () => null,
   Text: () => null,
+  ActivityIndicator: () => null,
   StyleSheet: { create: () => ({}) },
   BackHandler: {},
   Platform: {},
