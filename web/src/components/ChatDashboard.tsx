@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, Routes, Route } from 'react-router-dom'
+import { supabase } from '../lib/supabase'
 import ChatView from './ChatView'
 import SettingsModal from './SettingsModal'
 import { useI18n } from '../i18n'
@@ -9,14 +10,21 @@ interface Conversation {
   customer_name: string
 }
 
-const conversations: Conversation[] = [
-  { id: '1', customer_name: 'Alice' },
-  { id: '2', customer_name: 'Bob' }
-]
-
 export default function ChatDashboard() {
   const [showSettings, setShowSettings] = useState(false)
   const { t } = useI18n()
+  const [conversations, setConversations] = useState<Conversation[]>([])
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      const { data } = await supabase
+        .from('conversations')
+        .select('id, customer_name')
+        .order('updated_at', { ascending: false })
+      if (data) setConversations(data as Conversation[])
+    }
+    fetchConversations()
+  }, [])
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'sans-serif', position: 'relative' }}>
       <button

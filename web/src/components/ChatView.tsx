@@ -1,8 +1,18 @@
+import { useParams } from 'react-router-dom'
+import { useRealtimeMessages } from '../lib/useRealtimeMessages'
+import ConversationThread from './ConversationThread'
+import MessageComposer from './MessageComposer'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../lib/AuthProvider'
 import { useAgentPresence } from '../lib/useAgentPresence'
 import { useI18n } from '../i18n'
+
+
+const { chatId } = useParams<{ chatId: string }>()
+
+const { sendMessage } = useRealtimeMessages(chatId ?? null)
+
 
 interface Message {
   id: string
@@ -54,6 +64,9 @@ export default function ChatView() {
 
   return (
     <>
+
+      <ConversationThread conversationId={chatId} />
+      <MessageComposer onSend={sendMessage} />
       <div data-testid="agent-status" style={{ padding: '5px 10px', borderBottom: '1px solid #ddd' }}>
         {t('status')} {status}
       </div>
@@ -78,6 +91,7 @@ export default function ChatView() {
           />
         </form>
       </footer>
+
     </>
   )
 }
