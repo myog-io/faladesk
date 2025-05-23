@@ -3,11 +3,10 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 # Copy frontend source
-COPY web/package.json ./web/package.json
-COPY web/package-lock.json ./web/package-lock.json
+COPY web/package.json web/yarn.lock ./web/
 WORKDIR /app/web
 RUN npm install -g expo-cli
-RUN yanr install
+RUN yarn install --legacy-peer-deps
 COPY web .
 
 # Pass Supabase env vars as build args
