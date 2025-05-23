@@ -39,7 +39,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: faladesk-config
-                  key: VITE_SUPABASE_URL
+                  key: EXPO_PUBLIC_SUPABASE_URL
             - name: SUPABASE_SERVICE_ROLE_KEY
               valueFrom:
                 secretKeyRef:
