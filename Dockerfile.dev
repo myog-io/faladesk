@@ -1,16 +1,20 @@
 FROM node:18-alpine
 
-WORKDIR /app
-
-# Install deps from web
-COPY ./web/package.json ./web/package-lock.json* ./web/
-
+# Set working directory to Expo project
 WORKDIR /app/web
+
+# Install Expo CLI globally
+RUN npm install -g expo-cli
+
+# Install project dependencies
+COPY ./web/package.json ./web/package-lock.json* ./
 RUN npm install --legacy-peer-deps
 
-# Copy all web source files
+# Copy all project sources
 COPY ./web .
 
+# Expose Expo development server port
+EXPOSE 19006
 
-
-CMD ["npm", "run", "dev"]
+# Start Expo in web mode
+CMD ["npx", "expo", "start", "--web"]
