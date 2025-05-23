@@ -14,6 +14,8 @@ export const Animated = {
 }
 export const StyleSheet = { create: () => ({}) }
 export const Dimensions = { get: () => ({}) }
+export const Pressable = () => null
+export const TextInput = () => null
 export const I18nManager = {}
 export const PanResponder = {}
 export const AccessibilityInfo = {
@@ -25,6 +27,8 @@ export default {
   StatusBar,
   View,
   Text,
+  Pressable,
+  TextInput,
   ActivityIndicator,
   Animated,
   StyleSheet,
