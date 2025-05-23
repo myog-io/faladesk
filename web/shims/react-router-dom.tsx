@@ -70,3 +70,9 @@ export function useParams() {
   const { params } = useContext(RouterCtx)
   return params
 }
+
+export function useMatch(pattern: string) {
+  const { path } = useContext(RouterCtx)
+  const params = match(pattern, path)
+  return params ? { params } : null
+}

@@ -1,40 +1,23 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useRealtimeMessages } from '../lib/useRealtimeMessages'
 
-interface Message {
-  id: string
-  sender: string
-  content: string
-}
-
-const initialMessages: Record<string, Message[]> = {
-  '1': [
-    { id: 'm1', sender: 'customer', content: 'Hi' },
-    { id: 'm2', sender: 'agent', content: 'Hello Alice' }
-  ],
-  '2': [
-    { id: 'm3', sender: 'customer', content: 'Hey' },
-    { id: 'm4', sender: 'agent', content: 'Hello Bob' }
-  ]
-}
-
-export default function ChatView() {
+export default function ChatView({
+  clearUnread,
+}: {
+  clearUnread: (id: string) => void
+}) {
   const { chatId } = useParams<{ chatId: string }>()
-  const [messages, setMessages] = useState<Message[]>([])
+  const { messages, sendMessage } = useRealtimeMessages(chatId || null)
   const [input, setInput] = useState('')
 
   useEffect(() => {
-    if (chatId) {
-      setMessages(initialMessages[chatId] || [])
-    }
-  }, [chatId])
+    if (chatId) clearUnread(chatId)
+  }, [chatId, clearUnread])
 
   const handleSend = () => {
     if (!input.trim()) return
-    setMessages((m) => [
-      ...m,
-      { id: Date.now().toString(), sender: 'agent', content: input.trim() }
-    ])
+    sendMessage(input.trim())
     setInput('')
   }
 
