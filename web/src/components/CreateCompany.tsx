@@ -9,6 +9,7 @@ export default function CreateCompany() {
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
+  const [userName, setUserName] = useState('')
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,6 +32,7 @@ export default function CreateCompany() {
       email: session.user.email,
       organization_id: org.id,
       role: 'admin',
+      name: userName,
     })
 
     if (userError) {
@@ -42,6 +44,13 @@ export default function CreateCompany() {
 
   return (
     <VStack as="form" space="md" p="$4" onSubmit={handleSubmit}>
+      <Input>
+        <InputField
+          placeholder="Your Name"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+      </Input>
       <Input>
         <InputField
           placeholder="Company Name"
