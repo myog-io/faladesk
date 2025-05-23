@@ -1,81 +1,60 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+import { useRealtimeMessages } from '../lib/useRealtimeMessages'
 
-interface Chat {
+interface Conversation {
   id: string
-  name: string
-  lastMessage: string
-  timestamp: string
-  unread: boolean
-}
-
-interface Message {
-  id: string
-  sender: 'agent' | 'customer'
-  content: string
-  timestamp: string
+  customer_name: string
 }
 
 export default function ChatDashboard() {
-  const [chats] = useState<Chat[]>([
-    {
-      id: '1',
-      name: 'Maria Silva',
-      lastMessage: 'Obrigado!',
-      timestamp: '09:30',
-      unread: true
-    },
-    {
-      id: '2',
-      name: 'João Santos',
-      lastMessage: 'Preciso de ajuda',
-      timestamp: 'Ontem',
-      unread: false
-    }
-  ])
+  const [conversations, setConversations] = useState<Conversation[]>([])
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [input, setInput] = useState('')
 
-  const [messages] = useState<Message[]>([
-    {
-      id: 'm1',
-      sender: 'customer',
-      content: 'Olá, tudo bem?',
-      timestamp: '09:00'
-    },
-    {
-      id: 'm2',
-      sender: 'agent',
-      content: 'Posso ajudar?',
-      timestamp: '09:05'
+  useEffect(() => {
+    const fetchConversations = async () => {
+      const { data } = await supabase
+        .from('conversations')
+        .select('id, customer_name')
+        .order('updated_at', { ascending: false })
+      if (data) setConversations(data as Conversation[])
     }
-  ])
+    fetchConversations()
+  }, [])
+
+  const { messages, sendMessage } = useRealtimeMessages(selectedId)
+
+  const handleSend = async () => {
+    if (!input.trim()) return
+    await sendMessage(input.trim())
+    setInput('')
+  }
 
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'sans-serif' }}>
       <aside style={{ width: '30%', borderRight: '1px solid #ddd', overflowY: 'auto' }}>
-        <div style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-          <input
-            type="text"
-            placeholder="Ask Meta AI or Search"
-            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-          />
-        </div>
-        {chats.map((c) => (
+        {conversations.map((c) => (
           <div
+            data-testid="conversation-row"
             key={c.id}
-            style={{ padding: '10px', borderBottom: '1px solid #f0f0f0', background: c.unread ? '#e6f7ff' : undefined }}
+            onClick={() => setSelectedId(c.id)}
+            style={{
+              padding: '10px',
+              borderBottom: '1px solid #f0f0f0',
+              background: selectedId === c.id ? '#eee' : undefined,
+              cursor: 'pointer'
+            }}
           >
-            <div style={{ fontWeight: 'bold' }}>{c.name}</div>
-            <div style={{ fontSize: '12px', color: '#555' }}>{c.lastMessage}</div>
-            <div style={{ fontSize: '12px', textAlign: 'right', color: '#999' }}>{c.timestamp}</div>
+            {c.customer_name}
           </div>
         ))}
       </aside>
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <header style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-          <strong>Maria Silva</strong>
-        </header>
         <div style={{ flex: 1, padding: '10px', overflowY: 'auto', background: '#f5f5f5' }}>
           {messages.map((m) => (
             <div
+              data-testid="message-row"
               key={m.id}
               style={{
                 display: 'flex',
@@ -92,18 +71,29 @@ export default function ChatDashboard() {
                 }}
               >
                 {m.content}
-                <div style={{ fontSize: '10px', textAlign: 'right', marginTop: '2px', color: '#666' }}>{m.timestamp}</div>
               </div>
             </div>
           ))}
         </div>
-        <footer style={{ padding: '10px', borderTop: '1px solid #ddd' }}>
-          <input
-            type="text"
-            placeholder="Type a message..."
-            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-          />
-        </footer>
+        {selectedId && (
+          <footer style={{ padding: '10px', borderTop: '1px solid #ddd' }}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                handleSend()
+              }}
+            >
+              <input
+                data-testid="reply-box"
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type a message..."
+                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+              />
+            </form>
+          </footer>
+        )}
       </main>
     </div>
   )
