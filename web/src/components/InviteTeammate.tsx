@@ -11,8 +11,7 @@ export default function InviteTeammate() {
   const [error, setError] = useState<string | null>(null)
   const { t } = useI18n()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     if (!user) return
     setError(null)
     const { error } = await supabase.functions.invoke('invite-user', {
@@ -35,16 +34,16 @@ export default function InviteTeammate() {
   }
 
   return (
-    <VStack as="form" space="md" p="$4" onSubmit={handleSubmit}>
+    <VStack space="md" p="$4">
       <Input>
         <InputField
           placeholder={t('team_email_placeholder')}
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChangeText={setEmail}
         />
       </Input>
       {error && <Text color="$error500">{error}</Text>}
-      <Button type="submit">
+      <Button onPress={handleSubmit}>
         <Text>{t('send_invite')}</Text>
       </Button>
     </VStack>

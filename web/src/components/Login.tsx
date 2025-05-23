@@ -10,8 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
 
-  const handlePasswordLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handlePasswordLogin = async () => {
     setError(null)
     if (email && password) {
       try {
@@ -38,27 +37,25 @@ export default function Login() {
 
   return (
     <VStack space="md" p="$4">
-      <VStack as="form" space="md" onSubmit={handlePasswordLogin} data-testid="login-form">
-        <Input>
-          <InputField
-            placeholder={t('email_placeholder')}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Input>
-        <Input>
-          <InputField
-            placeholder={t('password_placeholder')}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Input>
-        {error && <Text color="$error500">{error}</Text>}
-        <Button type="submit">
-          <Text>{t('login')}</Text>
-        </Button>
-      </VStack>
+      <Input>
+        <InputField
+          placeholder={t('email_placeholder')}
+          value={email}
+          onChangeText={setEmail}
+        />
+      </Input>
+      <Input>
+        <InputField
+          placeholder={t('password_placeholder')}
+          type="password"
+          value={password}
+          onChangeText={setPassword}
+        />
+      </Input>
+      {error && <Text color="$error500">{error}</Text>}
+      <Button onPress={handlePasswordLogin} disabled={!email || !password}>
+        <Text>{t('login')}</Text>
+      </Button>
       <Button onPress={handleMagicLink} disabled={!email}>
         <Text>{t('send_magic_link')}</Text>
       </Button>

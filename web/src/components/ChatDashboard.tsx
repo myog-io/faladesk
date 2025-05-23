@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Link, Routes, Route } from 'react-router-dom'
+import { View, Text, TouchableOpacity, ScrollView, Button } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import { supabase } from '../lib/supabase'
-import ChatView from './ChatView'
 import SettingsModal from './SettingsModal'
 import { useI18n } from '../i18n'
 
@@ -14,6 +14,7 @@ export default function ChatDashboard() {
   const [showSettings, setShowSettings] = useState(false)
   const { t } = useI18n()
   const [conversations, setConversations] = useState<Conversation[]>([])
+  const navigation = useNavigation()
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -25,31 +26,21 @@ export default function ChatDashboard() {
     }
     fetchConversations()
   }, [])
+
   return (
-    <div style={{ display: 'flex', height: '100vh', fontFamily: 'sans-serif', position: 'relative' }}>
-      <button
-        style={{ position: 'absolute', top: '10px', right: '10px' }}
-        onClick={() => setShowSettings(true)}
-      >
-        {t('settings')}
-      </button>
+    <View style={{ flex: 1 }}>
+      <Button title={t('settings')} onPress={() => setShowSettings(true)} />
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
-      <aside style={{ width: '30%', borderRight: '1px solid #ddd', overflowY: 'auto' }}>
-        <div style={{ padding: '10px', borderBottom: '1px solid #f0f0f0' }}>
-          <Link to="/invite">{t('invite_teammate')}</Link>
-        </div>
-        {conversations.map((c) => (
-          <div key={c.id} style={{ padding: '10px', borderBottom: '1px solid #f0f0f0' }}>
-            <Link to={`/chat/${c.id}`}>{c.customer_name}</Link>
-          </div>
+      <ScrollView style={{ flex: 1 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Invite' as never)} style={{ padding: 10, borderBottomWidth: 1, borderColor: '#f0f0f0' }}>
+          <Text>{t('invite_teammate')}</Text>
+        </TouchableOpacity>
+        {conversations.map(c => (
+          <TouchableOpacity key={c.id} onPress={() => navigation.navigate('ChatView' as never, { chatId: c.id })} style={{ padding: 10, borderBottomWidth: 1, borderColor: '#f0f0f0' }}>
+            <Text>{c.customer_name}</Text>
+          </TouchableOpacity>
         ))}
-      </aside>
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <Routes>
-          <Route path="/chat/:chatId" element={<ChatView />} />
-          <Route path="/" element={<div style={{ padding: '10px' }}>{t('select_chat')}</div>} />
-        </Routes>
-      </main>
-    </div>
+      </ScrollView>
+    </View>
   )
 }
