@@ -143,19 +143,19 @@ Agent) is invoked to generate a reply using OpenAI.
 
 ### Start the React interface
 
-The React agent console lives in [`web/`](./web). To run it locally:
+The React agent console lives in [`web/`](./web) and now uses
+[Expo](https://expo.dev/). To run it locally:
 
 ```bash
 cd web
 npm install --legacy-peer-deps  # instala dependências nativas do Gluestack
-npm run dev
+npm start            # runs `expo start`
 ```
 
-This launches the app with Vite at `http://localhost:3000`.
-When opened in the browser you should see the login form with the button
-labelled **"Entrar"**.
+Press `w` or run `npm run web` to launch the web preview. The dev server
+listens on `http://localhost:8081`.
 
-Vite and Vitest expose a global `__DEV__` constant so components from
+Expo still exposes a global `__DEV__` constant so components from
 `@gluestack-ui/themed` work correctly in both development and tests.
 
 Alternatively, build and run everything with Docker Compose. This will start a
@@ -166,8 +166,10 @@ cp .env.example .env # fill in Supabase keys
 docker compose up --build
 ```
 
-The frontend is available at `http://localhost:3000` and Supabase exposes its
-services on ports `54321`, `54322` and `8000`.
+Once the containers are running Expo serves the app on
+`http://localhost:8081`. Supabase exposes its services on ports `54321`, `54322`
+and `8000`. The production `Dockerfile` runs `expo export` to build the
+static web assets served by Nginx.
 
 ### Deploying edge functions
 
@@ -198,7 +200,9 @@ page at `/`. The markup lives in `server/landing.html`. After building the React
 interface you can launch it with:
 
 ```bash
-npm run build --prefix web
+cd web
+npx expo export --platform web
+cd ..
 node server/server.js
 ```
 
