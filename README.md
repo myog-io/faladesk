@@ -168,8 +168,8 @@ docker compose up --build
 
 Once the containers are running Expo serves the app on
 `http://localhost:8081`. Supabase exposes its services on ports `54321`, `54322`
-and `8000`. The production `Dockerfile` runs `expo export` to build the
-static web assets served by Nginx.
+and `8000`. The production `Dockerfile` runs `expo export` to build the static
+web assets under `web/dist`, which Nginx serves.
 
 ### Deploying edge functions
 
@@ -201,7 +201,7 @@ interface you can launch it with:
 
 ```bash
 cd web
-npx expo export --platform web
+npx expo export --platform web  # outputs to dist/
 cd ..
 node server/server.js
 ```
