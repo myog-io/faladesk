@@ -11,7 +11,7 @@ export const AsForwarder = React.forwardRef(({ as: Comp = 'div', ...props }, ref
 export const styled = (Component) =>
   React.forwardRef((props, ref) => React.createElement(Component, { ref, ...props }))
 
-// No-op providers and helpers
+// No-op provider and helpers; StyledProvider simply returns its children
 export const StyledProvider = ({ children }) => children
 export const useStyled = () => ({})
 export const flush = () => {}
