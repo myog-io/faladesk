@@ -12,7 +12,7 @@ export const styled = (Component) =>
   React.forwardRef((props, ref) => React.createElement(Component, { ref, ...props }))
 
 // No-op providers and helpers
-export const StyledProvider = ({ children }) => <>{children}</>
+export const StyledProvider = ({ children }) => children
 export const useStyled = () => ({})
 export const flush = () => {}
 export const createConfig = () => ({})
