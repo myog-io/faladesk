@@ -32,7 +32,11 @@ export const Animated = {
   },
   timing: () => ({ start: () => {} }),
   Easing: {
-    linear: (t) => t
+    linear: (t) => t,
+    in: (easing) => easing,
+    out: (easing) => (t) => 1 - easing(1 - t),
+    inOut: (easing) => (t) =>
+      t < 0.5 ? easing(t * 2) / 2 : 1 - easing((1 - t) * 2) / 2
   }
 }
 export const Easing = Animated.Easing
