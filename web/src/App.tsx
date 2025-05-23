@@ -1,4 +1,4 @@
-import { VStack } from '@gluestack-ui/themed'
+import { VStack, Text } from '@gluestack-ui/themed'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useAuth } from './lib/AuthProvider'
 import Landing from './components/Landing'
@@ -14,7 +14,11 @@ export default function App() {
   const { session, loading } = useAuth()
 
   if (loading) {
-    return null
+    return (
+      <VStack p="$4">
+        <Text>Loading...</Text>
+      </VStack>
+    )
   }
 
   if (!session) {
