@@ -30,7 +30,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const signIn = async (email: string) => {
-    await supabase.auth.signInWithOtp({ email })
+    await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: `${window.location.origin}/magic-link` }
+    })
   }
 
   const signOut = async () => {
