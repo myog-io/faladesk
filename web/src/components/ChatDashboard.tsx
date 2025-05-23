@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Routes, Route } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import ChatView from './ChatView'
