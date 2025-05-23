@@ -4,14 +4,16 @@ import { supabase } from '../lib/supabase'
 
 export default function SignUp() {
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
-    const { error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signUp({
       email,
+      password,
       options: { emailRedirectTo: `${window.location.origin}/magic-link` }
     })
     if (error) {
@@ -19,14 +21,14 @@ export default function SignUp() {
     } else {
       setSent(true)
       setEmail('')
-      window.history.pushState(null, '', '/magic-link')
+      setPassword('')
     }
   }
 
   if (sent) {
     return (
       <VStack space="md" p="$4">
-        <Text>Check your inbox for a magic link.</Text>
+        <Text>Check your inbox to confirm your email.</Text>
       </VStack>
     )
   }
@@ -40,9 +42,17 @@ export default function SignUp() {
           onChange={(e) => setEmail(e.target.value)}
         />
       </Input>
+      <Input>
+        <InputField
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </Input>
       {error && <Text color="$error500">{error}</Text>}
       <Button type="submit">
-        <Text>Send Magic Link</Text>
+        <Text>Sign Up</Text>
       </Button>
     </VStack>
   )
