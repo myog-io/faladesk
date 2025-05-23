@@ -32,10 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const signInWithMagicLink = async (email: string) => {
-    await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${window.location.origin}/magic-link` }
-    })
+    await supabase.auth.signInWithOtp({ email })
   }
 
   const signInWithPassword = async (email: string, password: string) => {
@@ -43,11 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   const signUp = async (email: string, password: string) => {
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: `${window.location.origin}/magic-link` }
-    })
+    await supabase.auth.signUp({ email, password })
   }
 
   const signOut = async () => {

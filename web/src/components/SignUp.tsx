@@ -10,13 +10,12 @@ export default function SignUp() {
   const [error, setError] = useState<string | null>(null)
   const { t } = useI18n()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     setError(null)
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: `${window.location.origin}/magic-link` }
+      options: { emailRedirectTo: 'magic-link' }
     })
     if (error) {
       setError(error.message)
@@ -36,12 +35,12 @@ export default function SignUp() {
   }
 
   return (
-    <VStack as="form" space="md" p="$4" onSubmit={handleSubmit}>
+    <VStack space="md" p="$4">
       <Input>
         <InputField
           placeholder={t('email_placeholder')}
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChangeText={setEmail}
         />
       </Input>
       <Input>
@@ -49,11 +48,11 @@ export default function SignUp() {
           placeholder={t('password_placeholder')}
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChangeText={setPassword}
         />
       </Input>
       {error && <Text color="$error500">{error}</Text>}
-      <Button type="submit">
+      <Button onPress={handleSubmit} disabled={!email || !password}>
         <Text>{t('sign_up')}</Text>
       </Button>
     </VStack>

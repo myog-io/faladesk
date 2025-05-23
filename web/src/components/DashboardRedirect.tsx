@@ -1,17 +1,17 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigation } from '@react-navigation/native'
 import { useUserOrganization } from '../lib/useUserOrganization'
 
 export default function DashboardRedirect() {
   const { user, loading } = useUserOrganization()
-  const navigate = useNavigate()
+  const navigation = useNavigation()
 
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        navigate('/create-company')
+        navigation.navigate('CreateCompany' as never)
       } else {
-        navigate('/')
+        navigation.navigate('Chat' as never)
       }
     }
   }, [user, loading])
