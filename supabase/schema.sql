@@ -18,6 +18,12 @@ create table if not exists users (
   created_at timestamptz default now()
 );
 
+-- Agent presence status
+alter table users
+  add column if not exists status text
+    check (status in ('online','away','offline'))
+    not null default 'offline';
+
 -- Conversations and messages
 create table if not exists conversations (
   id uuid primary key default gen_random_uuid(),
