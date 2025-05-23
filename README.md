@@ -151,7 +151,7 @@ npm install --legacy-peer-deps  # instala dependências nativas do Gluestack
 npm run dev
 ```
 
-This launches the app with Vite at `http://localhost:5173`.
+This launches the app with Vite at `http://localhost:3000`.
 When opened in the browser you should see the login form with the button
 labelled **"Entrar"**.
 
