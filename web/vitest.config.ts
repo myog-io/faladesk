@@ -14,8 +14,18 @@ export default defineConfig({
       '@gluestack-ui/provider': shim('./shims/gluestack-ui-provider.mjs'),
     }
   },
+  server: {
+    fs: {
+      // allow accessing test files outside the web directory
+      allow: ['..']
+    }
+  },
   test: {
-    include: ['src/**/*.{test,spec}.tsx'],
+    include: ['src/**/*.{test,spec}.tsx', '../apps/frontend/tests/**/*.ts*'],
+    deps: {
+      // ensure external tests resolve dependencies from this package
+      moduleDirectories: [fileURLToPath(new URL('node_modules', import.meta.url))]
+    },
     environment: 'jsdom',
     globals: true,
     setupFiles: './vitest.setup.ts'

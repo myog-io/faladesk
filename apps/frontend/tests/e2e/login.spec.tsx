@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { vi, describe, it, expect } from 'vitest'
-import Login from '../../../web/src/components/Login'
+import Login from '../../../../web/src/components/Login'
 
 const signInMock = vi.fn()
-vi.mock('../../../web/src/lib/AuthProvider', () => ({
+vi.mock('../../../../web/src/lib/AuthProvider', () => ({
   useAuth: () => ({ signIn: signInMock })
 }))
 

@@ -1,19 +1,36 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { vi, describe, it, expect } from 'vitest'
-import ChatDashboard from '../../../web/src/components/ChatDashboard'
+import ChatDashboard from '../../../../web/src/components/ChatDashboard'
 
 const sendMock = vi.fn()
 
-vi.mock('../../../web/src/lib/useRealtimeMessages', () => ({
+vi.mock('../../../../web/src/lib/useRealtimeMessages', () => ({
   useRealtimeMessages: (id: string | null) => ({
     messages: id ? [{ id: 'm1', sender: 'customer', content: 'hi', created_at: '' }] : [],
     sendMessage: sendMock
   })
 }))
 
-vi.mock('../../../web/src/lib/supabase', () => ({
+vi.mock('../../../../web/src/lib/supabase', () => ({
   supabase: {
-    from: vi.fn(() => ({ select: vi.fn(() => ({ order: vi.fn(() => Promise.resolve({ data: [{ id: 'c1', customer_name: 'Alice' }], error: null })) })) }))
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        order: vi.fn(() => ({
+          limit: vi.fn(() => Promise.resolve({
+            data: [
+              {
+                id: 'c1',
+                customer_name: 'Alice',
+                messages: [
+                  { content: 'hi', sender: 'customer', created_at: '' }
+                ]
+              }
+            ],
+            error: null
+          }))
+        }))
+      }))
+    }))
   }
 }))
 

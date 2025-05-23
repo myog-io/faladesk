@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { vi, describe, it, expect } from 'vitest'
-import ChatDashboard from '../../../web/src/components/ChatDashboard'
+import ChatDashboard from '../../../../web/src/components/ChatDashboard'
 
-vi.mock('../../../web/src/lib/useRealtimeMessages', () => ({
+vi.mock('../../../../web/src/lib/useRealtimeMessages', () => ({
   useRealtimeMessages: () => ({
     messages: [
       { id: '1', sender: 'customer', content: 'hi', created_at: '' },
@@ -12,7 +12,7 @@ vi.mock('../../../web/src/lib/useRealtimeMessages', () => ({
   })
 }))
 
-vi.mock('../../../web/src/lib/supabase', () => ({
+vi.mock('../../../../web/src/lib/supabase', () => ({
   supabase: { from: vi.fn(() => ({ select: vi.fn(() => ({ order: vi.fn(() => Promise.resolve({ data: [], error: null })) })) })) }
 }))
 

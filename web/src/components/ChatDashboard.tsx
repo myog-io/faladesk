@@ -5,6 +5,9 @@ import { useRealtimeMessages } from '../lib/useRealtimeMessages'
 interface Conversation {
   id: string
   customer_name: string
+  last_message?: string
+  last_time?: string
+  unread?: boolean
 }
 
 export default function ChatDashboard() {
@@ -16,9 +19,25 @@ export default function ChatDashboard() {
     const fetchConversations = async () => {
       const { data } = await supabase
         .from('conversations')
-        .select('id, customer_name')
+        .select(
+          'id, customer_name, messages(content, sender, created_at)'
+        )
         .order('updated_at', { ascending: false })
-      if (data) setConversations(data as Conversation[])
+        .limit(1, { foreignTable: 'messages' })
+
+      if (data) {
+        const convs = (data as any[]).map((c) => {
+          const last = c.messages?.[0]
+          return {
+            id: c.id,
+            customer_name: c.customer_name,
+            last_message: last?.content,
+            last_time: last?.created_at,
+            unread: last?.sender === 'customer'
+          }
+        })
+        setConversations(convs)
+      }
     }
     fetchConversations()
   }, [])
@@ -46,7 +65,22 @@ export default function ChatDashboard() {
               cursor: 'pointer'
             }}
           >
-            {c.customer_name}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>
+                <div>{c.customer_name}</div>
+                <div style={{ fontSize: '12px', color: '#555' }}>
+                  {c.last_message}
+                </div>
+              </div>
+              <div style={{ textAlign: 'right', fontSize: '12px' }}>
+                <div>{c.last_time && new Date(c.last_time).toLocaleTimeString()}</div>
+                {c.unread && (
+                  <span data-testid="unread-indicator" style={{ color: 'red' }}>
+                    •
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         ))}
       </aside>

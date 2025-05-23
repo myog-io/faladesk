@@ -1,14 +1,14 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { vi, describe, it, expect } from 'vitest'
-import ChatDashboard from '../../../web/src/components/ChatDashboard'
+import ChatDashboard from '../../../../web/src/components/ChatDashboard'
 
 const sendMock = vi.fn()
 
-vi.mock('../../../web/src/lib/useRealtimeMessages', () => ({
+vi.mock('../../../../web/src/lib/useRealtimeMessages', () => ({
   useRealtimeMessages: () => ({ messages: [], sendMessage: sendMock })
 }))
 
-vi.mock('../../../web/src/lib/supabase', () => ({
+vi.mock('../../../../web/src/lib/supabase', () => ({
   supabase: { from: vi.fn(() => ({ select: vi.fn(() => ({ order: vi.fn(() => Promise.resolve({ data: [], error: null })) })) })) }
 }))
 
