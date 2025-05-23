@@ -18,6 +18,7 @@ export const StyleSheet = { create: () => ({}) }
 export const Dimensions = { get: () => ({}) }
 export const Pressable = () => null
 export const TextInput = () => null
+export const FlatList = () => null
 export const I18nManager = {}
 export const PanResponder = {}
 export const AccessibilityInfo = {
@@ -31,6 +32,7 @@ export default {
   Text,
   Pressable,
   TextInput,
+  FlatList,
   ActivityIndicator,
   Animated,
   StyleSheet,
