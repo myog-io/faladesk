@@ -1,7 +1,13 @@
 // Shim for the `react-native` package so the web build doesn't break.
 // Each exported component is a simple stub used by Gluestack UI.
 export const BackHandler = {}
-export const Platform = {}
+// Basic implementation of `Platform` used by Gluestack UI. Only the `OS`
+// identifier and `select` helper are provided so libraries relying on
+// `Platform.select()` do not crash during web development.
+export const Platform = {
+  OS: 'web',
+  select: (spec = {}) => spec.web ?? spec.default,
+}
 export const StatusBar = {}
 export const View = () => null
 export const Text = () => null
