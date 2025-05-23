@@ -35,6 +35,7 @@ export const Animated = {
     linear: (t) => t
   }
 }
+export const Easing = Animated.Easing
 export const StyleSheet = { create: () => ({}) }
 export const Dimensions = { get: () => ({}) }
 export const Pressable = () => null
