@@ -4,5 +4,5 @@ metadata:
   name: faladesk-config
   namespace: faladesk
 data:
-  VITE_SUPABASE_URL: "https://supabase.example.com"
+  EXPO_PUBLIC_SUPABASE_URL: "https://supabase.example.com"
   OPENAI_MODEL: "gpt-3.5-turbo"

@@ -107,8 +107,8 @@ Edit the new `.env` file and set the following variables:
 
 For the React app, copy `.env.example` to `.env` in the project root and set:
 
-- `VITE_SUPABASE_URL` – your Supabase project URL
-- `VITE_SUPABASE_ANON_KEY` – anonymous key for the client
+- `EXPO_PUBLIC_SUPABASE_URL` – your Supabase project URL
+- `EXPO_PUBLIC_SUPABASE_ANON_KEY` – anonymous key for the client
 
 You can run `./init.sh` to create the required `.env` files automatically and
 apply the database schema if the Supabase CLI is installed.
