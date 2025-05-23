@@ -6,7 +6,7 @@ import SignUp from './components/SignUp'
 import MagicLink from './components/MagicLink'
 import CreateCompany from './components/CreateCompany'
 import DashboardRedirect from './components/DashboardRedirect'
-import { Inbox } from './components/Inbox'
+import ChatDashboard from './components/ChatDashboard'
 
 export default function App() {
   const { session, loading } = useAuth()
@@ -33,7 +33,7 @@ export default function App() {
   }
 
   if (path === '/dashboard') {
-    return <Inbox />
+    return <ChatDashboard />
   }
 
   return <DashboardRedirect />
