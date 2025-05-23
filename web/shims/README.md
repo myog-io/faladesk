@@ -6,7 +6,8 @@ Vite build and tests to run, lightweight shims are provided in this folder.
 
 ## Available Shims
 
-- **react-native** – Stubs common React Native components and utilities.
+- **react-native** – Stubs common React Native components and utilities. Basic
+  keyboard event methods like `addListener` and `dismiss` are no-ops.
 - **react-native-svg** – Provides empty SVG components used by icon wrappers.
 - **@gluestack-style/react** – Minimal implementation exposing `AsForwarder` and `styled` along
   with no-op helpers.
