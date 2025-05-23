@@ -28,4 +28,21 @@ describe('ChatDashboard routing', () => {
     // left column still shows other conversation
     expect(screen.getByText('Bob')).toBeInTheDocument()
   })
+
+  it('filters conversations via search bar', () => {
+    render(
+      <BrowserRouter>
+        <ChatDashboard />
+      </BrowserRouter>
+    )
+    // both conversations visible initially
+    expect(screen.getByText('Alice')).toBeInTheDocument()
+    expect(screen.getByText('Bob')).toBeInTheDocument()
+
+    const input = screen.getByPlaceholderText('Search...') as HTMLInputElement
+    fireEvent.change(input, { target: { value: 'bob' } })
+
+    expect(screen.queryByText('Alice')).not.toBeInTheDocument()
+    expect(screen.getByText('Bob')).toBeInTheDocument()
+  })
 })
