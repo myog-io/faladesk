@@ -1,4 +1,5 @@
 import { VStack } from '@gluestack-ui/themed'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useAuth } from './lib/AuthProvider'
 import Landing from './components/Landing'
 import Login from './components/Login'
@@ -15,26 +16,33 @@ export default function App() {
     return null
   }
 
-  const path = window.location.pathname
-
   if (!session) {
-    if (path === '/signup') return <SignUp />
-    if (path === '/magic-link') return <MagicLink />
     return (
-      <VStack space="md" p="$4">
-        <Landing />
-        <Login />
-      </VStack>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/magic-link" element={<MagicLink />} />
+          <Route
+            path="*"
+            element={(
+              <VStack space="md" p="$4">
+                <Landing />
+                <Login />
+              </VStack>
+            )}
+          />
+        </Routes>
+      </BrowserRouter>
     )
   }
 
-  if (path === '/create-company') {
-    return <CreateCompany />
-  }
-
-  if (path === '/dashboard') {
-    return <ChatDashboard />
-  }
-
-  return <DashboardRedirect />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/create-company" element={<CreateCompany />} />
+        <Route path="/*" element={<ChatDashboard />} />
+        <Route path="*" element={<DashboardRedirect />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
