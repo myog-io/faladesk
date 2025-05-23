@@ -25,6 +25,20 @@ vi.mock('../lib/supabase', () => ({
   supabase: { from: vi.fn(() => ({ select: vi.fn() })) }
 }))
 
+vi.mock('../lib/useRealtimeMessages', () => ({
+  useRealtimeMessages: () => ({ sendMessage: vi.fn() })
+}))
+
+vi.mock('../components/ConversationThread', () => ({
+  __esModule: true,
+  default: () => <div data-testid="conversation-thread" />
+}))
+
+vi.mock('../components/MessageComposer', () => ({
+  __esModule: true,
+  default: () => <div />
+}))
+
 const updateStatus = vi.fn()
 
 vi.mock('../lib/AuthProvider', () => ({
