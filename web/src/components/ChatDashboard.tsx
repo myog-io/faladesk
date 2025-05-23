@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useRealtimeMessages } from '../lib/useRealtimeMessages'
+import MessageComposer from './MessageComposer'
 
 interface Conversation {
   id: string
@@ -10,7 +11,6 @@ interface Conversation {
 export default function ChatDashboard() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [input, setInput] = useState('')
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -24,12 +24,6 @@ export default function ChatDashboard() {
   }, [])
 
   const { messages, sendMessage } = useRealtimeMessages(selectedId)
-
-  const handleSend = async () => {
-    if (!input.trim()) return
-    await sendMessage(input.trim())
-    setInput('')
-  }
 
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'sans-serif' }}>
@@ -75,25 +69,7 @@ export default function ChatDashboard() {
             </div>
           ))}
         </div>
-        {selectedId && (
-          <footer style={{ padding: '10px', borderTop: '1px solid #ddd' }}>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                handleSend()
-              }}
-            >
-              <input
-                data-testid="reply-box"
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type a message..."
-                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-              />
-            </form>
-          </footer>
-        )}
+        {selectedId && <MessageComposer onSend={sendMessage} />}
       </main>
     </div>
   )
