@@ -185,7 +185,7 @@ Ensure your Supabase URL and keys are configured in your environment before depl
 
 ## Testing
 
-Vitest is used for frontend unit and integration tests located in `apps/frontend/tests`. Deno's built-in `deno test` runs the edge function tests under `supabase/functions/tests`.
+Vitest is used for frontend unit and integration tests located in `web/src/__tests__`. Deno's built-in `deno test` runs the edge function tests under `supabase/functions/tests`.
 
 Run all tests:
 
