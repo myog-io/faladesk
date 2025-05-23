@@ -6,6 +6,17 @@ export const StatusBar = {}
 export const View = () => null
 export const Text = () => null
 export const Image = () => null
+export const Keyboard = {}
+export const KeyboardAvoidingView = () => null
+export const Linking = {}
+export const Modal = () => null
+export const PixelRatio = { get: () => 1 }
+export const SafeAreaView = () => null
+export const ScrollView = () => null
+export const SectionList = () => null
+export const Switch = () => null
+export const VirtualizedList = () => null
+export const findNodeHandle = () => null
 export const ActivityIndicator = () => null
 export const Animated = {
   View: View,
@@ -31,10 +42,21 @@ export default {
   StatusBar,
   View,
   Text,
-  Image,
   Pressable,
   TextInput,
   FlatList,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Linking,
+  Modal,
+  PixelRatio,
+  SafeAreaView,
+  ScrollView,
+  SectionList,
+  Switch,
+  VirtualizedList,
+  findNodeHandle,
   ActivityIndicator,
   Animated,
   StyleSheet,
