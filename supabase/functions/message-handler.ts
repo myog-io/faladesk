@@ -2,14 +2,27 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-serve(async (req) => {
-  const body = await req.json()
-  const { customer_name, channel, conversation_id, content } = body
+interface Payload {
+  customer_name: string
+  channel: string
+  conversation_id?: string
+  content: string
+  adapter?: { organization_id?: string }
+}
 
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-  )
+export async function handleReceiveMessage(
+  payload: Payload,
+  opts: { supabase?: any; fetcher?: typeof fetch } = {}
+) {
+  const supabase =
+    opts.supabase ??
+    createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    )
+  const doFetch = opts.fetcher ?? fetch
+
+  const { customer_name, channel, conversation_id, content } = payload
 
   let convId = conversation_id
   if (!convId) {
@@ -17,7 +30,7 @@ serve(async (req) => {
       .from('conversations')
       .insert({
         channel,
-        organization_id: body.adapter?.organization_id
+        organization_id: payload.adapter?.organization_id
       })
       .select()
       .single()
@@ -38,7 +51,7 @@ serve(async (req) => {
     .single()
 
   if (!conv.assigned_user_id) {
-    await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/ai-respond`, {
+    await doFetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/ai-respond`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,8 +61,13 @@ serve(async (req) => {
     })
   }
 
-  return new Response(
-    JSON.stringify({ ok: true, conversation_id: convId }),
-    { headers: { 'Content-Type': 'application/json' } }
-  )
+  return { ok: true, conversation_id: convId }
+}
+
+serve(async (req) => {
+  const payload: Payload = await req.json()
+  const result = await handleReceiveMessage(payload)
+  return new Response(JSON.stringify(result), {
+    headers: { 'Content-Type': 'application/json' }
+  })
 })
