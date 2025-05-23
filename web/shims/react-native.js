@@ -6,6 +6,9 @@ export const StyleSheet = { create: () => ({}) }
 export const Dimensions = { get: () => ({}) }
 export const I18nManager = {}
 export const PanResponder = {}
+export const AccessibilityInfo = {
+  setAccessibilityFocus: () => {}
+}
 export default {
   BackHandler,
   Platform,
@@ -14,5 +17,6 @@ export default {
   StyleSheet,
   Dimensions,
   I18nManager,
-  PanResponder
+  PanResponder,
+  AccessibilityInfo
 }
