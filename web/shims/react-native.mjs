@@ -30,7 +30,10 @@ export const Animated = {
   Value: function (v) {
     this.value = v
   },
-  timing: () => ({ start: () => {} })
+  timing: () => ({ start: () => {} }),
+  Easing: {
+    linear: (t) => t
+  }
 }
 export const StyleSheet = { create: () => ({}) }
 export const Dimensions = { get: () => ({}) }
@@ -65,6 +68,7 @@ export default {
   findNodeHandle,
   ActivityIndicator,
   Animated,
+  Easing,
   StyleSheet,
   Dimensions,
   I18nManager,
