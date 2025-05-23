@@ -1,15 +1,17 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useUserOrganization } from '../lib/useUserOrganization'
 
 export default function DashboardRedirect() {
   const { user, loading } = useUserOrganization()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        window.location.pathname = '/create-company'
+        navigate('/create-company')
       } else {
-        window.location.pathname = '/dashboard'
+        navigate('/')
       }
     }
   }, [user, loading])

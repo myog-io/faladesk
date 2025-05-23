@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { VStack, Input, InputField, Button, Text } from '@gluestack-ui/themed'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthProvider'
 
 export default function CreateCompany() {
   const { session } = useAuth()
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -34,7 +36,7 @@ export default function CreateCompany() {
     if (userError) {
       setError(userError.message)
     } else {
-      window.location.pathname = '/dashboard'
+      navigate('/')
     }
   }
 
