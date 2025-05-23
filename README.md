@@ -155,6 +155,9 @@ This launches the app with Vite at `http://localhost:5173`.
 When opened in the browser you should see the login form with the button
 labelled **"Entrar"**.
 
+Vite and Vitest expose a global `__DEV__` constant so components from
+`@gluestack-ui/themed` work correctly in both development and tests.
+
 Alternatively, build and run everything with Docker Compose. This will start a
 local Supabase stack alongside the frontend:
 
