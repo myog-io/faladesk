@@ -18,10 +18,6 @@ vi.mock('../lib/useUserOrganization', () => ({
 }))
 
 vi.mock('../lib/supabase', () => ({
-  supabase: { from: vi.fn(() => ({ select: vi.fn(() => ({ order: vi.fn(() => Promise.resolve({ data: [], error: null })) })) })) }
-
-}))
-vi.mock('../lib/supabase', () => ({
   supabase: {
     from: vi.fn(() => ({
       select: vi.fn(() => ({
@@ -42,6 +38,7 @@ vi.mock('../lib/useRealtimeMessages', () => ({
     ],
     sendMessage: vi.fn()
   })
+}))
 
 describe('ChatDashboard routing', () => {
   beforeEach(() => {
@@ -52,7 +49,9 @@ describe('ChatDashboard routing', () => {
   it('shows placeholder on root path', async () => {
     render(
       <BrowserRouter>
-        <ChatDashboard />
+        <I18nProvider initialLang="en">
+          <ChatDashboard />
+        </I18nProvider>
       </BrowserRouter>
     )
     expect(screen.getByText('Select a chat')).toBeInTheDocument()
@@ -62,7 +61,9 @@ describe('ChatDashboard routing', () => {
   it('navigates to chat when clicking conversation', async () => {
     render(
       <BrowserRouter>
-        <ChatDashboard />
+        <I18nProvider initialLang="en">
+          <ChatDashboard />
+        </I18nProvider>
       </BrowserRouter>
     )
     fireEvent.click(await screen.findByText('Alice'))
