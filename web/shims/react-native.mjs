@@ -4,6 +4,14 @@ export const StatusBar = {}
 export const View = () => null
 export const Text = () => null
 export const ActivityIndicator = () => null
+export const Animated = {
+  View: View,
+  createAnimatedComponent: (Comp) => Comp,
+  Value: function (v) {
+    this.value = v
+  },
+  timing: () => ({ start: () => {} })
+}
 export const StyleSheet = { create: () => ({}) }
 export const Dimensions = { get: () => ({}) }
 export const I18nManager = {}
@@ -18,6 +26,7 @@ export default {
   View,
   Text,
   ActivityIndicator,
+  Animated,
   StyleSheet,
   Dimensions,
   I18nManager,
