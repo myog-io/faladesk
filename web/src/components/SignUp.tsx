@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { VStack, Input, InputField, Button, Text } from '@gluestack-ui/themed'
 import { supabase } from '../lib/supabase'
+import { useI18n } from '../i18n'
 
 export default function SignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { t } = useI18n()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,7 +30,7 @@ export default function SignUp() {
   if (sent) {
     return (
       <VStack space="md" p="$4">
-        <Text>Check your inbox to confirm your email.</Text>
+        <Text>{t('check_confirm_email')}</Text>
       </VStack>
     )
   }
@@ -37,14 +39,14 @@ export default function SignUp() {
     <VStack as="form" space="md" p="$4" onSubmit={handleSubmit}>
       <Input>
         <InputField
-          placeholder="you@example.com"
+          placeholder={t('email_placeholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </Input>
       <Input>
         <InputField
-          placeholder="Password"
+          placeholder={t('password_placeholder')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -52,7 +54,7 @@ export default function SignUp() {
       </Input>
       {error && <Text color="$error500">{error}</Text>}
       <Button type="submit">
-        <Text>Sign Up</Text>
+        <Text>{t('sign_up')}</Text>
       </Button>
     </VStack>
   )

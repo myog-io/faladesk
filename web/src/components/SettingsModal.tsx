@@ -1,18 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useI18n, Lang } from '../i18n'
+import { useUserOrganization } from '../lib/useUserOrganization'
 
 interface SettingsModalProps {
   onClose: () => void
 }
 
 export default function SettingsModal({ onClose }: SettingsModalProps) {
+  const { t, lang, setLang } = useI18n()
+  const { user, updateLanguage } = useUserOrganization()
   const [name, setName] = useState('')
   const [available, setAvailable] = useState(true)
   const [notifications, setNotifications] = useState(true)
   const [profile, setProfile] = useState<File | null>(null)
+  const [language, setLanguage] = useState<Lang>(lang)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (user?.language) setLanguage(user.language as Lang)
+  }, [user])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Normally would persist settings here
+    await updateLanguage(language)
+    setLang(language)
     onClose()
   }
 
@@ -31,11 +41,11 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
       }}
     >
       <div style={{ background: '#fff', padding: '20px', borderRadius: '8px', minWidth: '300px' }}>
-        <h2>Agent Settings</h2>
+        <h2>{t('agent_settings')}</h2>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '8px' }}>
             <label>
-              Profile Picture
+              {t('profile_picture')}
               <input
                 data-testid="profile-input"
                 type="file"
@@ -45,7 +55,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           </div>
           <div style={{ marginBottom: '8px' }}>
             <label>
-              Name
+              {t('name')}
               <input
                 data-testid="name-input"
                 type="text"
@@ -56,7 +66,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           </div>
           <div style={{ marginBottom: '8px' }}>
             <label>
-              Available
+              {t('available')}
               <input
                 data-testid="available-input"
                 type="checkbox"
@@ -66,22 +76,36 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             </label>
           </div>
           <div style={{ marginBottom: '8px' }}>
-            <label>
-              Notifications
-              <input
-                data-testid="notifications-input"
-                type="checkbox"
-                checked={notifications}
-                onChange={(e) => setNotifications(e.target.checked)}
-              />
-            </label>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-            <button type="button" onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit">Save</button>
-          </div>
+          <label>
+            {t('notifications')}
+            <input
+              data-testid="notifications-input"
+              type="checkbox"
+              checked={notifications}
+              onChange={(e) => setNotifications(e.target.checked)}
+            />
+          </label>
+        </div>
+        <div style={{ marginBottom: '8px' }}>
+          <label>
+            {t('language') || 'Language'}
+            <select
+              data-testid="language-select"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as Lang)}
+            >
+              <option value="en">English</option>
+              <option value="pt-BR">Português (Brasil)</option>
+              <option value="es">Español</option>
+            </select>
+          </label>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+          <button type="button" onClick={onClose}>
+            {t('cancel')}
+          </button>
+          <button type="submit">{t('save')}</button>
+        </div>
         </form>
       </div>
     </div>
