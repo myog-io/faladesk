@@ -7,7 +7,7 @@ WORKDIR /app/web
 RUN npm install -g expo-cli
 
 # Install project dependencies
-COPY ./web/package.json ./web/package-lock.json* ./
+COPY ./web/package.json ./web/yarn.lock ./
 RUN yarn install --legacy-peer-deps
 
 # Copy all project sources
