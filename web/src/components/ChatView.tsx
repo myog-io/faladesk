@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../lib/AuthProvider'
 import { useAgentPresence } from '../lib/useAgentPresence'
+import { useI18n } from '../i18n'
 
 interface Message {
   id: string
@@ -26,6 +27,7 @@ export default function ChatView() {
   const [input, setInput] = useState('')
   const { session } = useAuth()
   const { status, updateStatus } = useAgentPresence(session?.user.id || null)
+  const { t } = useI18n()
 
   useEffect(() => {
     if (chatId) {
@@ -53,7 +55,7 @@ export default function ChatView() {
   return (
     <>
       <div data-testid="agent-status" style={{ padding: '5px 10px', borderBottom: '1px solid #ddd' }}>
-        Status: {status}
+        {t('status')} {status}
       </div>
       <div style={{ flex: 1, padding: '10px', overflowY: 'auto', background: '#f5f5f5' }}>
         {messages.map((m) => (
@@ -71,7 +73,7 @@ export default function ChatView() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message..."
+            placeholder={t('type_message')}
             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           />
         </form>

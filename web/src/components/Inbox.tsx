@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Box, Button, Text, VStack } from '@gluestack-ui/themed'
+import { useI18n } from '../i18n'
 
 interface Message {
   id: string
@@ -9,6 +10,7 @@ interface Message {
 
 export function Inbox() {
   const [messages, setMessages] = useState<Message[]>([])
+  const { t } = useI18n()
 
   useEffect(() => {
     // placeholder: fetch messages via Supabase
@@ -22,7 +24,7 @@ export function Inbox() {
           <Text>{m.content}</Text>
         </Box>
       ))}
-      <Button onPress={() => {}}><Text>Reply</Text></Button>
+      <Button onPress={() => {}}><Text>{t('reply')}</Text></Button>
     </VStack>
   )
 }

@@ -13,6 +13,7 @@ create table if not exists users (
   email text not null,
   name text,
   avatar_url text,
+  language text default 'en',
   organization_id uuid references organizations on delete cascade,
   role text not null check (role in ('admin','agent')),
   created_at timestamptz default now()

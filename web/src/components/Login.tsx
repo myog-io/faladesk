@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Button, Input, InputField, VStack, Text } from '@gluestack-ui/themed'
 import { useAuth } from '../lib/AuthProvider'
+import { useI18n } from '../i18n'
 
 export default function Login() {
   const { signInWithMagicLink, signInWithPassword } = useAuth()
+  const { t } = useI18n()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -39,14 +41,14 @@ export default function Login() {
       <VStack as="form" space="md" onSubmit={handlePasswordLogin} data-testid="login-form">
         <Input>
           <InputField
-            placeholder="you@example.com"
+            placeholder={t('email_placeholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </Input>
         <Input>
           <InputField
-            placeholder="Password"
+            placeholder={t('password_placeholder')}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -54,11 +56,11 @@ export default function Login() {
         </Input>
         {error && <Text color="$error500">{error}</Text>}
         <Button type="submit">
-          <Text>Login</Text>
+          <Text>{t('login')}</Text>
         </Button>
       </VStack>
       <Button onPress={handleMagicLink} disabled={!email}>
-        <Text>Send Magic Link</Text>
+        <Text>{t('send_magic_link')}</Text>
       </Button>
     </VStack>
   )
