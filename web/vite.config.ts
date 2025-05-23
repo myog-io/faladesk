@@ -16,6 +16,7 @@ export default defineConfig({
       'react-native-svg': shim('./shims/react-native-svg.mjs'),
       '@gluestack-style/react': shim('./shims/gluestack-style-react.mjs'),
       '@gluestack-ui/provider': shim('./shims/gluestack-ui-provider.mjs'),
+      'react-router-dom': shim('./shims/react-router-dom.tsx'),
     }
   },
   optimizeDeps: {

@@ -6,6 +6,7 @@ export interface RealtimeMessage {
   sender: string
   content: string
   created_at: string
+  metadata?: any
 }
 
 export function useRealtimeMessages(conversationId: string | null) {
@@ -19,7 +20,7 @@ export function useRealtimeMessages(conversationId: string | null) {
     const fetchMessages = async () => {
       const { data } = await supabase
         .from('messages')
-        .select('id, sender, content, created_at')
+        .select('id, sender, content, created_at, metadata')
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: true })
 
@@ -39,7 +40,11 @@ export function useRealtimeMessages(conversationId: string | null) {
           filter: `conversation_id=eq.${conversationId}`
         },
         (payload) => {
-          setMessages((msgs) => [...msgs, payload.new as RealtimeMessage])
+          setMessages((msgs) => {
+            const exists = msgs.find((m) => m.id === (payload.new as any).id)
+            if (exists) return msgs
+            return [...msgs, payload.new as RealtimeMessage]
+          })
         }
       )
       .subscribe()
@@ -49,12 +54,21 @@ export function useRealtimeMessages(conversationId: string | null) {
     }
   }, [conversationId])
 
-  const sendMessage = async (content: string) => {
+  const sendMessage = async (content: string, metadata?: any) => {
     if (!conversationId) return
+    const optimistic: RealtimeMessage = {
+      id: 'local-' + Date.now(),
+      sender: 'agent',
+      content,
+      created_at: new Date().toISOString(),
+      metadata
+    }
+    setMessages((msgs) => [...msgs, optimistic])
     await supabase.from('messages').insert({
       conversation_id: conversationId,
       sender: 'agent',
-      content
+      content,
+      metadata
     })
   }
 
