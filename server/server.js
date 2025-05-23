@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const port = process.env.PORT || 8080;
-const distDir = path.join(__dirname, '..', 'web', 'dist');
+const distDir = path.join(__dirname, '..', 'web', 'web-build');
 
 function serveFile(filePath, contentType, res) {
   fs.readFile(filePath, (err, data) => {
