@@ -8,10 +8,10 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'react-native': shim('./shims/react-native.js'),
-      'react-native-svg': shim('./shims/react-native-svg.js'),
-      '@gluestack-style/react': shim('./shims/gluestack-style-react.js'),
-      '@gluestack-ui/provider': shim('./shims/gluestack-ui-provider.js'),
+      'react-native': shim('./shims/react-native.mjs'),
+      'react-native-svg': shim('./shims/react-native-svg.mjs'),
+      '@gluestack-style/react': shim('./shims/gluestack-style-react.mjs'),
+      '@gluestack-ui/provider': shim('./shims/gluestack-ui-provider.mjs'),
     }
   },
   test: {
