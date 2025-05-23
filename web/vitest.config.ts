@@ -6,6 +6,7 @@ const shim = (p: string) => fileURLToPath(new URL(p, import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
+  define: { __DEV__: process.env.NODE_ENV !== 'production' },
   resolve: {
     alias: {
       'react-native': shim('./shims/react-native.mjs'),
