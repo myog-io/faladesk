@@ -7,7 +7,7 @@ COPY web/package.json ./web/package.json
 COPY web/package-lock.json ./web/package-lock.json
 WORKDIR /app/web
 RUN npm install -g expo-cli
-RUN npm install --legacy-peer-deps
+RUN yanr install
 COPY web .
 
 # Pass Supabase env vars as build args
