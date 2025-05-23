@@ -1,29 +1,29 @@
-import { renderHook, act } from '@testing-library/react'
-import { vi, describe, it, expect } from 'vitest'
+import { renderHook, act } from '@testing-library/react-native'
+import { describe, it, expect, jest } from '@jest/globals'
 import { useRealtimeMessages } from '../../../web/src/lib/useRealtimeMessages'
 import { useAgentPresence } from '../../../web/src/lib/useAgentPresence'
 
-vi.mock('../../../web/src/lib/supabase', () => {
-  const fromMock = vi.fn((table: string) => {
+jest.mock('../../../web/src/lib/supabase', () => {
+  const fromMock = jest.fn((table: string) => {
     if (table === 'messages') {
       return {
-        select: vi.fn(() => ({
-          eq: vi.fn(() => ({
-            order: vi.fn(() => Promise.resolve({ data: [], error: null }))
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            order: jest.fn(() => Promise.resolve({ data: [], error: null }))
           }))
         })),
-        insert: vi.fn()
+        insert: jest.fn()
       }
     }
     if (table === 'users') {
       return {
-        select: vi.fn(() => ({
-          eq: vi.fn(() => ({
-            single: vi.fn(() => Promise.resolve({ data: { status: 'offline' } }))
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            single: jest.fn(() => Promise.resolve({ data: { status: 'offline' } }))
           }))
         })),
-        update: vi.fn(() => ({
-          eq: vi.fn(() => Promise.resolve({ data: {} }))
+        update: jest.fn(() => ({
+          eq: jest.fn(() => Promise.resolve({ data: {} }))
         }))
       }
     }
@@ -33,11 +33,11 @@ vi.mock('../../../web/src/lib/supabase', () => {
   return {
     supabase: {
       from: fromMock,
-      channel: vi.fn(() => ({
-        on: vi.fn().mockReturnThis(),
-        subscribe: vi.fn().mockReturnThis()
+      channel: jest.fn(() => ({
+        on: jest.fn().mockReturnThis(),
+        subscribe: jest.fn().mockReturnThis()
       })),
-      removeChannel: vi.fn()
+      removeChannel: jest.fn()
     }
   }
 })

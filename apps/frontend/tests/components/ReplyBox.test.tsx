@@ -1,24 +1,24 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { vi, describe, it, expect } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react-native'
+import { describe, it, expect, jest } from '@jest/globals'
 import ChatDashboard from '../../../web/src/components/ChatDashboard'
 
-const sendMock = vi.fn()
+const sendMock = jest.fn()
 
-vi.mock('../../../web/src/lib/useRealtimeMessages', () => ({
+jest.mock('../../../web/src/lib/useRealtimeMessages', () => ({
   useRealtimeMessages: () => ({ messages: [], sendMessage: sendMock })
 }))
 
-vi.mock('../../../web/src/lib/supabase', () => ({
-  supabase: { from: vi.fn(() => ({ select: vi.fn(() => ({ order: vi.fn(() => Promise.resolve({ data: [], error: null })) })) })) }
+jest.mock('../../../web/src/lib/supabase', () => ({
+  supabase: { from: jest.fn(() => ({ select: jest.fn(() => ({ order: jest.fn(() => Promise.resolve({ data: [], error: null })) })) })) }
 }))
 
 describe('ReplyBox', () => {
   it('calls sendMessage function and clears input', async () => {
     render(<ChatDashboard />)
     const input = await screen.findByTestId('reply-box')
-    fireEvent.change(input, { target: { value: 'hello' } })
-    fireEvent.submit(input.closest('form') as HTMLFormElement)
+    fireEvent.changeText(input, 'hello')
+    fireEvent(input, 'submitEditing')
     expect(sendMock).toHaveBeenCalledWith('hello')
-    expect((input as HTMLInputElement).value).toBe('')
+    expect(input.props.value).toBe('')
   })
 })
