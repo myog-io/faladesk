@@ -7,12 +7,6 @@ import { useAuth } from '../lib/AuthProvider'
 import { useAgentPresence } from '../lib/useAgentPresence'
 import { useI18n } from '../i18n'
 
-
-const { chatId } = useParams<{ chatId: string }>()
-
-const { sendMessage } = useRealtimeMessages(chatId ?? null)
-
-
 interface Message {
   id: string
   sender: string
@@ -32,6 +26,7 @@ const initialMessages: Record<string, Message[]> = {
 
 export default function ChatView() {
   const { chatId } = useParams<{ chatId: string }>()
+  const { sendMessage } = useRealtimeMessages(chatId ?? null)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const { session } = useAuth()
