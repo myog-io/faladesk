@@ -13,7 +13,24 @@ vi.mock('../../../web/src/lib/useRealtimeMessages', () => ({
 
 vi.mock('../../../web/src/lib/supabase', () => ({
   supabase: {
-    from: vi.fn(() => ({ select: vi.fn(() => ({ order: vi.fn(() => Promise.resolve({ data: [{ id: 'c1', customer_name: 'Alice' }], error: null })) })) }))
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        order: vi.fn(() => ({
+          limit: vi.fn(() => Promise.resolve({
+            data: [
+              {
+                id: 'c1',
+                customer_name: 'Alice',
+                messages: [
+                  { content: 'hi', sender: 'customer', created_at: '' }
+                ]
+              }
+            ],
+            error: null
+          }))
+        })
+      }))
+    }))
   }
 }))
 
