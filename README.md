@@ -186,6 +186,20 @@ supabase functions deploy invite-user
 
 Ensure your Supabase URL and keys are configured in your environment before deploying.
 
+## Public Landing Page
+
+A minimal Node server under `server/` renders a search‑engine friendly landing
+page at `/`. The markup lives in `server/landing.html`. After building the React
+interface you can launch it with:
+
+```bash
+npm run build --prefix web
+node server/server.js
+```
+
+Visit `http://localhost:8080` to view the marketing page. The "Create Account"
+button links to the React application under `/app`.
+
 ## Testing
 
 Vitest is used for frontend unit and integration tests located in `apps/frontend/tests`. Deno's built-in `deno test` runs the edge function tests under `supabase/functions/tests`.
