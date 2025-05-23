@@ -6,6 +6,7 @@ import Login from './components/Login'
 import SignUp from './components/SignUp'
 import MagicLink from './components/MagicLink'
 import CreateCompany from './components/CreateCompany'
+import InviteTeammate from './components/InviteTeammate'
 import DashboardRedirect from './components/DashboardRedirect'
 import ChatDashboard from './components/ChatDashboard'
 
@@ -40,6 +41,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/create-company" element={<CreateCompany />} />
+        <Route path="/invite" element={<InviteTeammate />} />
         <Route path="/*" element={<ChatDashboard />} />
         <Route path="*" element={<DashboardRedirect />} />
       </Routes>

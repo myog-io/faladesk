@@ -50,3 +50,32 @@ create table if not exists workflows (
   is_active boolean not null default true
 );
 
+-- Pending invitations for new users
+create table if not exists invites (
+  id uuid primary key default gen_random_uuid(),
+  email text not null,
+  organization_id uuid references organizations on delete cascade,
+  role text not null default 'agent',
+  created_at timestamptz default now(),
+  accepted_at timestamptz
+);
+
+create or replace function handle_new_auth_user()
+returns trigger as $$
+declare
+  inv invites%rowtype;
+begin
+  select * into inv from invites where email = new.email order by created_at desc limit 1;
+  if inv.organization_id is not null then
+    insert into users (supabase_uid, email, organization_id, role)
+      values (new.id, new.email, inv.organization_id, inv.role);
+    update invites set accepted_at = now() where id = inv.id;
+  end if;
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute procedure handle_new_auth_user();
+
