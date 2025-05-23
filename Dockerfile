@@ -20,7 +20,7 @@ RUN npx expo export --platform web
 
 # Production stage
 FROM nginx:1.25-alpine
-COPY --from=build /app/web/web-build /usr/share/nginx/html
+COPY --from=build /app/web/dist /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
