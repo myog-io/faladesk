@@ -25,7 +25,7 @@ spec:
           ports:
             - containerPort: 54321
           env:
-            - name: SUPABASE_URL
+            - name: EXPO_PUBLIC_SUPABASE_URL
               valueFrom:
                 configMapKeyRef:
                   name: faladesk-config
