@@ -147,11 +147,13 @@ The React agent console lives in [`web/`](./web). To run it locally:
 
 ```bash
 cd web
-npm install
+npm install --legacy-peer-deps  # instala dependências nativas do Gluestack
 npm run dev
 ```
 
 This launches the app with Vite at `http://localhost:5173`.
+When opened in the browser you should see the login form with the button
+labelled **"Entrar"**.
 
 Alternatively, build and run everything with Docker Compose. This will start a
 local Supabase stack alongside the frontend:

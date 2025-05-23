@@ -1,3 +1,5 @@
+// Shim for the `react-native` package so the web build doesn't break.
+// Each exported component is a simple stub used by Gluestack UI.
 export const BackHandler = {}
 export const Platform = {}
 export const StatusBar = {}

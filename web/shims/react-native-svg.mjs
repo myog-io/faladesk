@@ -1,3 +1,5 @@
+// Shim for `react-native-svg` used by icon components in Gluestack UI.
+// All exports are empty React components.
 export const Svg = () => null
 export const Polygon = () => null
 export const Rect = () => null
