@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAuth } from '../lib/AuthProvider'
+import { useAgentPresence } from '../lib/useAgentPresence'
 
 interface Message {
   id: string
@@ -22,12 +24,20 @@ export default function ChatView() {
   const { chatId } = useParams<{ chatId: string }>()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
+  const { session } = useAuth()
+  const { status, updateStatus } = useAgentPresence(session?.user.id || null)
 
   useEffect(() => {
     if (chatId) {
       setMessages(initialMessages[chatId] || [])
     }
-  }, [chatId])
+    if (session) {
+      updateStatus('online')
+      return () => {
+        updateStatus('away')
+      }
+    }
+  }, [chatId, session])
 
   const handleSend = () => {
     if (!input.trim()) return
@@ -42,6 +52,9 @@ export default function ChatView() {
 
   return (
     <>
+      <div data-testid="agent-status" style={{ padding: '5px 10px', borderBottom: '1px solid #ddd' }}>
+        Status: {status}
+      </div>
       <div style={{ flex: 1, padding: '10px', overflowY: 'auto', background: '#f5f5f5' }}>
         {messages.map((m) => (
           <div key={m.id} style={{ display: 'flex', justifyContent: m.sender === 'agent' ? 'flex-end' : 'flex-start', marginBottom: '8px' }}>
