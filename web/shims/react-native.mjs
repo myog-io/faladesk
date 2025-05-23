@@ -12,7 +12,12 @@ export const StatusBar = {}
 export const View = () => null
 export const Text = () => null
 export const Image = () => null
-export const Keyboard = {}
+// Minimal keyboard interface used by some libraries
+export const Keyboard = {
+  addListener: () => ({ remove: () => {} }),
+  removeListener: () => {},
+  dismiss: () => {},
+}
 export const KeyboardAvoidingView = () => null
 export const Linking = {}
 export const Modal = () => null
