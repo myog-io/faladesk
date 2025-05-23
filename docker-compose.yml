@@ -1,21 +1,104 @@
-version: "3.9"
+
 
 services:
-  supabase:
-    build:
-      context: .
-      dockerfile: Dockerfile.supabase
+  supabase-db:
+    image: supabase/postgres:15.1.0.63
+    restart: always
+    ports:
+      - "54322:5432"
     volumes:
-      - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    working_dir: /app
-    entrypoint: ["supabase", "start"]
+      - supabase-db-data:/var/lib/postgresql/data
     env_file:
       - .env
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - supabase-network
+
+  supabase-auth:
+    image: supabase/gotrue:v2.132.2
+    depends_on:
+      - supabase-db
     ports:
-      - "54321:54321"
-      - "54325:54322"
-      - "8000:8000"
+      - "9999:9999"
+    env_file:
+      - .env
+    environment:
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@supabase-db:5432/postgres
+      GOTRUE_SITE_URL: http://localhost:3000
+      GOTRUE_JWT_SECRET: ${JWT_SECRET}
+      API_EXTERNAL_URL: ${API_EXTERNAL_URL}
+    networks:
+      - supabase-network
+
+  supabase-rest:
+    image: postgrest/postgrest:v10.1.1
+    depends_on:
+      - supabase-db
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env
+    environment:
+      PGRST_DB_URI: postgres://postgres:${POSTGRES_PASSWORD}@supabase-db:5432/postgres
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+    networks:
+      - supabase-network
+
+  supabase-storage:
+    image: supabase/storage-api:latest
+    depends_on:
+      - supabase-db
+    ports:
+      - "5005:5000"
+    env_file:
+      - .env
+    environment:
+      POSTGREST_URL: http://supabase-rest:3000
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@supabase-db:5432/postgres
+      ANON_KEY: ${SUPABASE_ANON_KEY}
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+    networks:
+      - supabase-network
+    volumes:
+      - supabase-storage-data:/var/lib/storage
+
+  supabase-realtime:
+    image: supabase/realtime:v2.15.0
+    depends_on:
+      - supabase-db
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: supabase-db
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ERL_AFLAGS: "-proto_dist inet_tcp"
+      NODE_NAME: "supabase_realtime"
+    networks:
+      - supabase-network
+
+  supabase-studio:
+    image: supabase/studio:latest
+    ports:
+      - "3002:3000"
+    depends_on:
+      - supabase-db
+    env_file:
+      - .env
+    environment:
+    
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      STUDIO_PG_META_URL: http://supabase-db:5432
+    networks:
+      - supabase-network
 
   frontend:
     build:
@@ -26,7 +109,7 @@ services:
         VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
     volumes:
       - ./web:/app/web
-      - /app/web/node_modules  # Prevent overwriting container node_modules
+      - /app/web/node_modules
     working_dir: /app/web
     command: npm run dev
     env_file:
@@ -34,5 +117,17 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - supabase
+      - supabase-rest
+      - supabase-auth
+      - supabase-db
     restart: unless-stopped
+    networks:
+      - supabase-network
+
+volumes:
+  supabase-db-data:
+  supabase-storage-data:
+
+networks:
+  supabase-network:
+  
