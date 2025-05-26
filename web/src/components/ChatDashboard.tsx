@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, ScrollView, Button } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import SettingsModal from './SettingsModal'
 import { useI18n } from '../i18n'
@@ -14,7 +14,7 @@ export default function ChatDashboard() {
   const [showSettings, setShowSettings] = useState(false)
   const { t } = useI18n()
   const [conversations, setConversations] = useState<Conversation[]>([])
-  const navigation = useNavigation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -32,11 +32,11 @@ export default function ChatDashboard() {
       <Button title={t('settings')} onPress={() => setShowSettings(true)} />
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
       <ScrollView style={{ flex: 1 }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Invite' as never)} style={{ padding: 10, borderBottomWidth: 1, borderColor: '#f0f0f0' }}>
+        <TouchableOpacity onPress={() => navigate('/invite')} style={{ padding: 10, borderBottomWidth: 1, borderColor: '#f0f0f0' }}>
           <Text>{t('invite_teammate')}</Text>
         </TouchableOpacity>
         {conversations.map(c => (
-          <TouchableOpacity key={c.id} onPress={() => navigation.navigate('ChatView' as never, { chatId: c.id })} style={{ padding: 10, borderBottomWidth: 1, borderColor: '#f0f0f0' }}>
+          <TouchableOpacity key={c.id} onPress={() => navigate(`/chat/${c.id}`)} style={{ padding: 10, borderBottomWidth: 1, borderColor: '#f0f0f0' }}>
             <Text>{c.customer_name}</Text>
           </TouchableOpacity>
         ))}
