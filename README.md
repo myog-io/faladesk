@@ -146,9 +146,12 @@ Agent) is invoked to generate a reply using OpenAI.
 The React agent console lives in [`web/`](./web) and now uses
 [Expo](https://expo.dev/). To run it locally:
 
+Install `@gluestack-style/react` and `react-native-svg` before starting the app:
+
 ```bash
 cd web
 npm install --legacy-peer-deps  # instala dependências nativas do Gluestack
+npm install @gluestack-style/react react-native-svg
 npm start            # runs `expo start`
 ```
 
