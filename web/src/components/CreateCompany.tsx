@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { VStack, Input, InputField, Button, Text } from '@gluestack-ui/themed'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthProvider'
 import { useI18n } from '../i18n'
 
 export default function CreateCompany() {
   const { session } = useAuth()
-  const navigation = useNavigation()
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [userName, setUserName] = useState('')
@@ -39,7 +39,7 @@ export default function CreateCompany() {
     if (userError) {
       setError(userError.message)
     } else {
-      navigation.navigate('Chat' as never)
+      navigate('/chat')
     }
   }
 

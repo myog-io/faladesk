@@ -46,7 +46,7 @@ export default function App() {
       <Routes>
         <Route path="/create-company" element={<CreateCompany />} />
         <Route path="/invite" element={<InviteTeammate />} />
-        <Route path="/*" element={<ChatDashboard />} />
+        <Route path="/chat/*" element={<ChatDashboard />} />
         <Route path="*" element={<DashboardRedirect />} />
       </Routes>
     </BrowserRouter>
