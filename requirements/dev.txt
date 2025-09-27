@@ -1,0 +1,11 @@
+-r base.txt
+
+black>=23.9
+flake8>=6.1
+isort>=5.12
+pytest>=7.4
+pytest-django>=4.5
+pytest-cov>=4.1
+coverage>=7.3
+mypy>=1.5
+factory-boy>=3.3

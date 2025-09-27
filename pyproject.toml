@@ -1,0 +1,42 @@
+[project]
+name = "faladesk-backend"
+version = "0.1.0"
+description = "Backend Django multi-tenant para o Faladesk"
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+exclude = "migrations"
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["apps", "faladesk_backend"]
+combine_as_imports = true
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [
+    "migrations",
+    ".venv",
+    "node_modules",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "faladesk_backend.settings.test"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = "--reuse-db --cov=apps --cov=faladesk_backend --cov-report=term-missing"
+
+[tool.coverage.run]
+branch = true
+source = ["apps", "faladesk_backend"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true

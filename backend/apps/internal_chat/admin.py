@@ -1,0 +1,1 @@
+"""Administração do chat interno."""

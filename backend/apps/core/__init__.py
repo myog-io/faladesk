@@ -1,0 +1,1 @@
+"""Aplicação core do Faladesk."""

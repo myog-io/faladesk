@@ -3,6 +3,8 @@
 ## Visão Geral
 - Todo o projeto é multi-tenant e orientado a eventos. Garanta que qualquer feature respeite `tenant_id`, org units e emita eventos para analytics/notificações quando necessário.
 - Ambiente padrão: `docker-compose up` deve ser suficiente para iniciar stack mínima (Postgres, Redis, Django, Channels, Celery, Ionic). Não introduzir dependências extras sem atualizar o compose.
+- A stack Docker fica disponível durante o desenvolvimento; utilize os containers (backend, workers, frontend) para executar testes, migrations e validações, evitando rodar serviços locais separados.
+- **Migrations:** nunca crie arquivos de migration manualmente. Gere sempre via `python manage.py makemigrations` dentro do container backend (`docker compose exec backend python manage.py makemigrations`) e valide com `migrate` no mesmo ambiente.
 - Trabalhe sempre em português nas comunicações internas (commits, docs) e mantenha neutralidade/clareza técnica.
 - Nenhuma configuração inicial é exigida para módulos como Gamificação ou Notificações: eles devem funcionar com seeds padrão.
 

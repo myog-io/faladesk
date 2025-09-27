@@ -25,6 +25,8 @@ Antes de atuar, leia:
 - Siga boas práticas descritas em `development_guidelines.md` (models enxutos, lógica em serializers/services, emissão de eventos, LGPD, testes, seeds).
 - Sempre atualizar documentação relevante ao concluir tarefas (principalmente `docs/plan/backend/README.md`).
 - Cada tarefa deve incluir comandos de teste executados e manter o projeto funcional via `docker-compose up`.
+- A stack Docker permanece disponível durante o desenvolvimento; utilize os containers (`backend`, `workers`, `frontend`) para rodar testes, lint, builds e validações descritas nas tarefas.
+- Gere migrations sempre dentro do container backend usando `python manage.py makemigrations` (nunca crie migrations manualmente).
 
 ## 5. Próximos Passos Recomendados
 1. Verificar backlog em `docs/plan/backend/` e selecionar a tarefa ainda pendente (Bxxx) mais prioritária.

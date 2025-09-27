@@ -2,7 +2,6 @@ from pathlib import Path
 
 import environ
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ROOT_DIR = BASE_DIR.parent
 
@@ -20,20 +19,21 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.
 
 SHARED_APPS = [
     "django_tenants",
+    "apps.organizations",
+    "django.contrib.contenttypes",
+]
+
+TENANT_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.core",
-]
-
-TENANT_APPS = [
-    "django.contrib.contenttypes",
     "rest_framework",
+    "rest_framework.authtoken",
     "django_filters",
-    "apps.organizations",
+    "apps.core",
     "apps.channels",
     "apps.contacts",
     "apps.messaging",
@@ -75,6 +75,9 @@ DATABASES = {
         "PASSWORD": env("POSTGRES_PASSWORD", default="faladesk"),
         "HOST": env("POSTGRES_HOST", default="postgres"),
         "PORT": env("POSTGRES_PORT", default="5432"),
+        "OPTIONS": {
+            "sslmode": env("POSTGRES_SSL_MODE", default="prefer"),
+        },
     }
 }
 
@@ -114,7 +117,10 @@ CELERY_TIMEZONE = TIME_ZONE
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -148,12 +154,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.IsAuthenticated",
-    ),
-    "DEFAULT_FILTER_BACKENDS": (
-        "django_filters.rest_framework.DjangoFilterBackend",
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
 LOGGING = {
@@ -177,4 +179,6 @@ LOGGING = {
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Faladesk <no-reply@faladesk.local>")
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL", default="Faladesk <no-reply@faladesk.local>"
+)
