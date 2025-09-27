@@ -1,0 +1,180 @@
+from pathlib import Path
+
+import environ
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+ROOT_DIR = BASE_DIR.parent
+
+env = environ.Env(
+    DJANGO_DEBUG=(bool, False),
+)
+
+env_file = ROOT_DIR / ".env"
+if env_file.exists():
+    environ.Env.read_env(env_file)
+
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="insecure-dev-secret-key")
+DEBUG = env("DJANGO_DEBUG")
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+
+SHARED_APPS = [
+    "django_tenants",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "apps.core",
+]
+
+TENANT_APPS = [
+    "django.contrib.contenttypes",
+    "rest_framework",
+    "django_filters",
+    "apps.organizations",
+    "apps.channels",
+    "apps.contacts",
+    "apps.messaging",
+    "apps.tickets",
+    "apps.knowledge",
+    "apps.automation",
+    "apps.analytics",
+    "apps.gamification",
+    "apps.notifications",
+    "apps.internal_chat",
+]
+
+INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+TENANT_MODEL = "organizations.Organization"
+TENANT_DOMAIN_MODEL = "organizations.Domain"
+PUBLIC_SCHEMA_NAME = "public"
+
+MIDDLEWARE = [
+    "django_tenants.middleware.main.TenantMainMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "faladesk_backend.urls"
+ASGI_APPLICATION = "faladesk_backend.asgi.application"
+WSGI_APPLICATION = "faladesk_backend.wsgi.application"
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django_tenants.postgresql_backend",
+        "NAME": env("POSTGRES_DB", default="faladesk"),
+        "USER": env("POSTGRES_USER", default="faladesk"),
+        "PASSWORD": env("POSTGRES_PASSWORD", default="faladesk"),
+        "HOST": env("POSTGRES_HOST", default="postgres"),
+        "PORT": env("POSTGRES_PORT", default="5432"),
+    }
+}
+
+DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
+
+AUTH_USER_MODEL = "core.User"
+
+LANGUAGE_CODE = "pt-br"
+TIME_ZONE = "UTC"
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CACHE_REDIS_URL = env("REDIS_URL", default="redis://redis:6379/0")
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": CACHE_REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default=CACHE_REDIS_URL)
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default=CACHE_REDIS_URL)
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+]
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    }
+]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ),
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s %(message)s",
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        }
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Faladesk <no-reply@faladesk.local>")
