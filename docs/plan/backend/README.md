@@ -13,7 +13,7 @@
 
 ## Fase 1 — Core (Auth/RBAC/Audit)
 - ✅ B101 — Modelos Core & Autenticação
-- B102 — RBAC & Escopo Multi-Tenant
+- ✅ B102 — RBAC & Escopo Multi-Tenant
 - B103 — Auditoria Estruturada
 
 ## Fase 2 — Organizations & SLA
@@ -68,3 +68,7 @@
 - `docker compose exec backend python manage.py makemigrations core`
 - `docker compose exec backend python manage.py migrate`
 - `docker compose exec backend pytest apps/core/tests` _(executar após provisionar dependências)_
+
+### Histórico de Comandos — B102
+- `python manage.py makemigrations core` _(falhou: dependências Django indisponíveis no ambiente de avaliação)_
+- `pytest backend/apps/core/tests/test_roles.py` _(falhou: dependências Django indisponíveis no ambiente de avaliação)_

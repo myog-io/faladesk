@@ -7,6 +7,9 @@ from rest_framework import serializers
 
 from .models import (
     LoginToken,
+    Permission,
+    Role,
+    RoleAssignment,
     ServiceAccount,
     ServiceAccountKey,
     Tenant,
@@ -199,6 +202,144 @@ class MagicLinkRequestSerializer(serializers.Serializer):
         if not TenantUser.objects.filter(tenant=tenant, user__email=value).exists():
             raise serializers.ValidationError("Usuário não encontrado neste tenant.")
         return value
+
+
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = (
+            "id",
+            "code",
+            "description",
+            "category",
+            "created_at",
+            "updated_at",
+        )
+        read_only_fields = ("id", "created_at", "updated_at")
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    permissions = serializers.SlugRelatedField(
+        many=True,
+        slug_field="code",
+        queryset=Permission.objects.all(),
+    )
+
+    class Meta:
+        model = Role
+        fields = (
+            "id",
+            "tenant",
+            "name",
+            "slug",
+            "description",
+            "scope",
+            "is_system",
+            "permissions",
+            "created_at",
+            "updated_at",
+        )
+        read_only_fields = ("id", "slug", "tenant", "created_at", "updated_at", "is_system")
+
+    def create(self, validated_data: dict):
+        permissions = validated_data.pop("permissions", [])
+        role: Role = super().create(validated_data)
+        role.permissions.set(permissions)
+        return role
+
+    def update(self, instance: Role, validated_data: dict):
+        permissions = validated_data.pop("permissions", None)
+        role: Role = super().update(instance, validated_data)
+        if permissions is not None:
+            role.permissions.set(permissions)
+        return role
+
+
+class RoleAssignmentSerializer(serializers.ModelSerializer):
+    role = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = RoleAssignment
+        fields = (
+            "id",
+            "tenant_user",
+            "role",
+            "scope_type",
+            "scope_id",
+            "effective_from",
+            "effective_to",
+            "created_at",
+            "updated_at",
+        )
+        read_only_fields = ("id", "role", "created_at", "updated_at")
+
+
+class RoleAssignmentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoleAssignment
+        fields = (
+            "tenant_user",
+            "scope_type",
+            "scope_id",
+            "effective_from",
+            "effective_to",
+        )
+
+    def validate_tenant_user(self, value: TenantUser) -> TenantUser:
+        role: Role = self.context["role"]
+        if value.tenant_id != role.tenant_id:
+            raise serializers.ValidationError(
+                "Usuário não pertence ao mesmo tenant do papel."
+            )
+        if value.status != TenantUser.Status.ACTIVE:
+            raise serializers.ValidationError("Usuário precisa estar ativo no tenant.")
+        return value
+
+    def validate(self, attrs: dict) -> dict:
+        role: Role = self.context["role"]
+        scope_type = attrs.get("scope_type")
+        scope_id = attrs.get("scope_id")
+
+        if role.scope != Role.Scope.GLOBAL:
+            if not scope_type:
+                raise serializers.ValidationError(
+                    {"scope_type": "Este papel requer definição de escopo."}
+                )
+            if scope_type != role.scope:
+                raise serializers.ValidationError(
+                    {"scope_type": "Escopo da atribuição precisa coincidir com o papel."}
+                )
+            if scope_id is None:
+                raise serializers.ValidationError(
+                    {"scope_id": "Este papel requer identificação do escopo."}
+                )
+        else:
+            if scope_type and scope_type != Role.Scope.GLOBAL:
+                raise serializers.ValidationError(
+                    {"scope_type": "Papéis globais não aceitam escopos específicos."}
+                )
+
+        effective_from = attrs.get("effective_from")
+        effective_to = attrs.get("effective_to")
+        if effective_from and effective_to and effective_from > effective_to:
+            raise serializers.ValidationError(
+                {"effective_to": "Data final deve ser posterior à data inicial."}
+            )
+        return attrs
+
+    def create(self, validated_data: dict):
+        role: Role = self.context["role"]
+        assignment, _created = RoleAssignment.objects.update_or_create(
+            tenant_user=validated_data["tenant_user"],
+            role=role,
+            scope_type=validated_data.get("scope_type"),
+            scope_id=validated_data.get("scope_id"),
+            defaults={
+                "effective_from": validated_data.get("effective_from"),
+                "effective_to": validated_data.get("effective_to"),
+            },
+        )
+        return assignment
 
 
 class TokenExchangeSerializer(serializers.Serializer):
