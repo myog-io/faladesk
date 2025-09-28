@@ -13,6 +13,7 @@
 - **Back-end (Django):**
   - Use apps já mapeados (`core`, `organizations`, `channels`, `contacts`, `messaging`, `tickets`, `knowledge`, `automation`, `analytics`, `gamification`, `notifications`, `internal_chat`, etc.).
   - Models enxutos: apenas campos, relacionamentos e validações simples.
+  - Centralize mixins/helpers no pacote `shared` (`shared.auth`, `shared.mixins`, `shared.utils`, `shared.services`). Use `TenantAwareAuthentication`, `MultiTenantQuerysetMixin`, `TimeStampedModel`, `generate_slug`, `generate_sequential_code` e `emit_notification`/`emit_analytics_event` como base para novos módulos.
   - Serializers concentram regras de negócio; viewsets permanecem finos, delegando para services/use cases onde fizer sentido.
   - Sempre aplique filtros por `tenant_id` e `org_unit` (quando aplicável). Utilize mixins utilitários já existentes.
   - Emita sinais/eventos (`analytics_event`, `notification_queue`, `gamification_event`) quando ações de negócio ocorrerem.

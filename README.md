@@ -32,6 +32,34 @@ cp .env.example .env
 
 > O backend (Daphne/ASGI) fica disponível em `http://localhost:8000`. Logs em tempo real podem ser acompanhados com `docker compose logs -f <service>`.
 
+## Ambiente local com Python
+
+Para executar apenas o backend fora dos containers (mantendo Postgres/Redis em Docker ou serviços locais):
+
+1. **Ativar ambiente virtual:**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install --upgrade pip
+   pip install -r requirements/dev.txt
+   ```
+2. **Configurar variáveis de ambiente:**
+   ```bash
+   cp .env.example .env
+   ```
+3. **Garantir serviços de suporte:** suba Postgres e Redis via Docker (`docker compose up -d postgres redis`) ou utilize instâncias locais equivalentes apontadas no `.env`.
+4. **Executar migrações e seeds:**
+   ```bash
+   python backend/manage.py migrate
+   python backend/manage.py seed_defaults
+   ```
+5. **Rodar o servidor Django:**
+   ```bash
+   python backend/manage.py runserver
+   ```
+
+Testes, lint e demais comandos podem ser executados diretamente com `python backend/manage.py` ou `pytest` dentro do ambiente virtual.
+
 ## Testes e Qualidade
 
 ```bash

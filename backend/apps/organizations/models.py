@@ -3,7 +3,8 @@ from __future__ import annotations
 from django.db import models
 from django_tenants.models import DomainMixin, TenantMixin
 
-from apps.core.models import TimeStampedModel
+from shared.mixins import TimeStampedModel
+from shared.utils import generate_slug
 
 
 class Organization(TenantMixin, TimeStampedModel):
@@ -22,6 +23,14 @@ class Organization(TenantMixin, TimeStampedModel):
 
     def __str__(self) -> str:
         return self.name
+
+    def save(self, *args: object, **kwargs: object) -> None:
+        if not self.slug and self.name:
+            queryset = self.__class__.objects.all()
+            if self.pk:
+                queryset = queryset.exclude(pk=self.pk)
+            self.slug = generate_slug(self.name, queryset=queryset)
+        super().save(*args, **kwargs)
 
 
 class Domain(DomainMixin, TimeStampedModel):
