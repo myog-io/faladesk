@@ -18,9 +18,10 @@ Desenvolver fluxo visual para identificar e mesclar contatos duplicados, utiliza
 - Teste manual com seeds dedupe.
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Merge end-to-end funcional.
 - ✅ README plano atualizado.
+- ✅ Caso endpoints backend sejam necessários, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/contacts.md`

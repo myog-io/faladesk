@@ -20,9 +20,10 @@ Construir interface visual estilo n8n para montar fluxos (drag-and-drop) consumi
 - Teste manual salvando fluxo default (intake flow).
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Fluxo default carregando/salvando sem erros.
 - ✅ README plano atualizado.
+- ✅ Caso novos endpoints/backend sejam necessários, atualizar documentação OpenAPI (B003).
 
 ## Referências
 - `docs/modules/automation.md`

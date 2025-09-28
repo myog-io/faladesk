@@ -19,9 +19,10 @@ Fornecer UI para criar/editar templates de nós (configurações, validações) 
 - Mock API para preview (resolver Promise com response fake).
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Editor valida JSON Schema e envia ao backend.
 - ✅ README plano atualizado.
+- ✅ Caso novos endpoints/backend sejam criados, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/automation.md`

@@ -20,9 +20,10 @@ Criar telas para visualizar pontos, badges, desafios e leaderboards, além de pe
 - Teste manual com seeds gamificação.
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Integração com backend (API + notificações) OK.
 - ✅ README plano atualizado.
+- ✅ Caso endpoints backend sejam necessários, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/gamification.md`

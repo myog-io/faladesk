@@ -19,9 +19,10 @@ Permitir export de relatórios (CSV/Excel) e compartilhamento de dashboards (lin
 - Teste manual downloads/links (ver arquivo gerado).
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Export e links funcionais (ao menos stub).
 - ✅ README plano atualizado.
+- ✅ Caso endpoints backend sejam criados/ajustados, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/analytics.md`

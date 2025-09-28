@@ -19,9 +19,10 @@ Adicionar tela para que usuários configurem preferências de notificação (can
 - Teste manual confirmando updates refletidos no backend.
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Configurações persistem via API.
 - ✅ README plano atualizado.
+- ✅ Caso endpoints backend precisem de ajustes, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/notifications.md`

@@ -22,9 +22,10 @@ Implementar telas e fluxos do módulo de tickets (lista, detalhe, comentários, 
 - Teste manual com backend rodando (seed ticket demo) garantindo CRUD.
 
 ## Checklist ao concluir
-- ✅ Tests UI passando.
+- ✅ Tests UI passando (container `frontend`).
 - ✅ Integração com notifications/gamificação (exibir kudos etc.) quando aplicável.
 - ✅ README do plano atualizado + docs (se screenshots ou instruções extras).
+- ✅ Caso novos endpoints/backend sejam necessários, atualizar documentação OpenAPI (B003) e módulos correspondentes.
 
 ## Referências
 - `docs/development_guidelines.md`

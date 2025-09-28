@@ -18,9 +18,10 @@ Implementar painel para monitorar execuções de flows (runs, steps, erros) com 
 - Teste manual com backend seeds (automatização default).
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Monitor funcional com retry/cancel.
 - ✅ README plano atualizado.
+- ✅ Caso endpoints/backend precisem de ajustes, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/automation.md`

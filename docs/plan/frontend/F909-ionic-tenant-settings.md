@@ -19,9 +19,10 @@ Criar página de configurações gerais (branding, idioma, notificações padrã
 - `npm run test` — `TenantSettings.test.tsx` com mocks API/upload.
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Configurações persistem via API.
 - ✅ README plano atualizado + docs se necessário.
+- ✅ Caso endpoints/backend sejam criados/ajustados, atualizar documentação OpenAPI (B003).
 
 ## Referências
 - `docs/modules/core.md`

@@ -19,9 +19,10 @@ Implementar tela unificada de contato, mostrando identidade, histórico, tickets
 - Teste manual com contato seed.
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Timeline e ações funcionando.
 - ✅ README plano atualizado.
+- ✅ Caso endpoints backend sejam necessários, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/contacts.md`

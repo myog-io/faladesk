@@ -18,9 +18,10 @@ Criar dashboard principal de analytics exibindo KPIs, gráficos e filtros, consu
 - Teste manual com seeds analytics (gerados B601).
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Dashboard responde a filtros e atualiza gráficos.
 - ✅ README plano atualizado + docs (se prints).
+- ✅ Caso seja necessário expor novos endpoints, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/analytics.md`

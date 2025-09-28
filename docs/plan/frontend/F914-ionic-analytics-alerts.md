@@ -18,9 +18,10 @@ Implementar interface para criar/editar alertas (thresholds, destinatários) e v
 - Teste manual plugando backend seeds/alerts.
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Fluxos CRUD e histórico funcionando.
 - ✅ README plano atualizado.
+- ✅ Caso endpoints/backend sejam criados/alterados, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/analytics.md`

@@ -16,9 +16,10 @@ Criar tela para visualizar digests (resumos) e histórico de notificações crí
 - Teste manual com backend seeds.
 
 ## Checklist ao concluir
-- ✅ Tests passando.
+- ✅ Tests passando (container `frontend`).
 - ✅ Centro de notificações funciona com filtros/busca.
 - ✅ README plano atualizado.
+- ✅ Caso endpoints backend sejam necessários, atualizar OpenAPI (B003).
 
 ## Referências
 - `docs/modules/notifications.md`
