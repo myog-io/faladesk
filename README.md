@@ -52,6 +52,7 @@ Para executar apenas o backend fora dos containers (mantendo Postgres/Redis em D
    ```bash
    python backend/manage.py migrate
    python backend/manage.py seed_defaults
+   python backend/manage.py seed_dev
    ```
 5. **Rodar o servidor Django:**
    ```bash

@@ -12,6 +12,8 @@ web/package-lock.json
 yarn-error.log*
 
 # Environment variables
+__pycache__
+.venv
 .env
 .env.*
 *.env
