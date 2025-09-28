@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -19,6 +20,7 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.
 
 SHARED_APPS = [
     "django_tenants",
+    "apps.core",
     "apps.organizations",
     "channels",
     "django.contrib.contenttypes",
@@ -34,6 +36,7 @@ TENANT_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "rest_framework_simplejwt",
     "drf_spectacular",
     "django_filters",
     "apps.core",
@@ -51,8 +54,8 @@ TENANT_APPS = [
 
 INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
-TENANT_MODEL = "organizations.Organization"
-TENANT_DOMAIN_MODEL = "organizations.Domain"
+TENANT_MODEL = "core.Tenant"
+TENANT_DOMAIN_MODEL = "core.TenantDomain"
 PUBLIC_SCHEMA_NAME = "public"
 
 MIDDLEWARE = [
@@ -165,11 +168,22 @@ TEMPLATES = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
+        "shared.auth.authentication.TenantAwareJWTAuthentication",
         "shared.auth.authentication.TenantAwareAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 SPECTACULAR_SETTINGS = {

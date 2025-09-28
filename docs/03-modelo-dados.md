@@ -24,7 +24,7 @@
 
 | Entidade | Campos Principais | Notas LGPD/RLS |
 | --- | --- | --- |
-| `tenant` | `id (UUID✓ idx)`, `nome (str✓)`, `slug (str✓ idx)` | Escopo lógico para RLS; base para sharding. |
+| `tenant` | `id (UUID✓ idx)`, `schema_name`, `nome (str✓)`, `slug (str✓ idx)`, `default_language`, `status` | Escopo lógico para RLS; base para sharding. |
 | `tenant_domain` | `id`, `tenant_id (FK✓ idx)`, `domínio (str✓ uniq)` | Subdomínios e links mágicos. |
 | `tenant_setting` | `id`, `tenant_id`, `chave`, `valor (JSONB)` | Configuração granular (branding, LGPD, billing). |
 | `tenant_subscription` | `id`, `tenant_id`, `plano`, `licencas`, `status` | Controle de cobrança e limites. |
@@ -38,7 +38,7 @@
 | `role_assignment` | `id`, `tenant_user_id`, `role_id`, `org_unit_id?`, `scope_type?` | Limita escopo por unidade/time. |
 | `login_token` | `id`, `tenant_id?`, `user_id`, `token`, `expires_at` | Autenticação por link mágico. |
 | `service_account` | `id`, `tenant_id`, `nome`, `status` | Integrações internas/API. |
-| `service_account_key` | `id`, `service_account_id`, `public_key`, `expires_at?` | Rotação de credenciais. |
+| `service_account_key` | `id`, `service_account_id`, `key_id`, `hashed_secret`, `expires_at?` | Rotação de credenciais. |
 | `audit_log` | `id`, `tenant_id`, `actor_id`, `evento`, `payload`, `registrado_em` | Imutável e consultável por compliance. |
 
 > Para detalhes completos, ver `docs/modules/core.md`.

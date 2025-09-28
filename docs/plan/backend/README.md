@@ -12,7 +12,7 @@
 - B004 — Shared Utils & Auth Base
 
 ## Fase 1 — Core (Auth/RBAC/Audit)
-- B101 — Modelos Core & Autenticação
+- ✅ B101 — Modelos Core & Autenticação
 - B102 — RBAC & Escopo Multi-Tenant
 - B103 — Auditoria Estruturada
 
@@ -63,3 +63,8 @@
 ### Histórico de Comandos — B003
 - `docker compose exec backend python manage.py spectacular --file schema.yaml` _(pendente: executar após instalar dependências)_
 - `docker compose exec backend python manage.py generate_openapi_postman`
+
+### Histórico de Comandos — B101
+- `docker compose exec backend python manage.py makemigrations core`
+- `docker compose exec backend python manage.py migrate`
+- `docker compose exec backend pytest apps/core/tests` _(executar após provisionar dependências)_
