@@ -8,10 +8,11 @@ Este diretório agrupa tarefas pequenas e autonomas para guiar a implementação
 - Sempre revisar `development_guidelines.md` antes de iniciar qualquer tarefa.
 - Garanta que a stack Docker (`docker-compose up`) esteja rodando; use os containers para executar testes, lint, builds e validações descritas em cada tarefa.
 - Gere migrations sempre dentro do container backend com `python manage.py makemigrations`; não criar arquivos de migration manualmente.
+- Frontend também deve rodar/testar via container `frontend` (`docker compose exec frontend npm run ...`). Evite executar comandos diretamente no host.
 
 ## Fase 0 — Bootstrap
-- `B001-bootstrap-project.md`: Criar estrutura Django multi-app com configuração inicial.
-- `B002-bootstrap-services.md`: Configurar Celery, Channels, Redis e seeds padrão.
+- `✅ B001-bootstrap-project.md`: Criar estrutura Django multi-app com configuração inicial.
+- `✅ B002-bootstrap-services.md`: Configurar Celery, Channels, Redis e seeds padrão.
 
 ## Fase 1 — Módulo Core
 - `B101-core-models-auth.md`
@@ -91,6 +92,7 @@ Este diretório agrupa tarefas pequenas e autonomas para guiar a implementação
 - `F921-mobile-capacitor-setup.md`
 - `F922-mobile-push-config.md`
 - `F923-mobile-release.md`
+- `F924-electron-packaging.md`
 
 ## Fase 11 — Release & Testes Integrados
 - `R1101-ci-cd-pipeline.md`

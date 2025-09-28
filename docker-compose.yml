@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: daphne -b 0.0.0.0 -p 8000 faladesk_backend.asgi:application
     volumes:
       - ./backend:/app
     env_file:
@@ -12,6 +12,40 @@ services:
       DJANGO_SETTINGS_MODULE: faladesk_backend.settings.dev
     ports:
       - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: celery -A faladesk_backend worker -l info
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    environment:
+      DJANGO_SETTINGS_MODULE: faladesk_backend.settings.dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: celery -A faladesk_backend beat -l info
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    environment:
+      DJANGO_SETTINGS_MODULE: faladesk_backend.settings.dev
     depends_on:
       postgres:
         condition: service_healthy

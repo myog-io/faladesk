@@ -1,28 +1,33 @@
-# F905 — Knowledge & Portal no Ionic
+# F905 — Knowledge Portal (Ionic Angular)
 
 ## Objetivo
-Implementar interface de base de conhecimento/portal (público e interno) consumindo APIs B502, incluindo busca, categorias e feedback.
+Implementar portal de conhecimento (público e interno) com busca, feedback e publicação de artigos consumindo APIs B502.
 
 ## Escopo
-1. Portal público (rotas sem auth):
-   - Página `KnowledgePortal` exibindo seções/categorias, artigos destacados, busca (client-side).
-   - Página `KnowledgeArticle` com conteúdo Markdown, breadcrumbs, feedback (thumbs up/down com comentário opcional).
-2. Portal interno (reutilizar layout principal):
-   - Tela `KnowledgeInternal` para agentes (listar artigos internos, quick replies favoritas, CTA “Publicar novo”).
-   - Formulário de criação/edição artigo (wizard simples) integrando endpoints `POST /knowledge/articles` e `/publish`.
+1. Portal público (sem auth):
+   - Rota `knowledge/:portalSlug` exibindo seções/categorias, artigos destacados, busca client-side.
+   - Página `knowledge-article` renderizando Markdown (usar `ngx-markdown` ou similar), breadcrumbs, feedback (thumb up/down + comentário).
+2. Portal interno (com auth):
+   - Tela `knowledge-internal` listando artigos internos, quick replies favoritas, CTA “Publicar novo”.
+   - Wizard Reactive Forms para criar/editar artigo, integrando `POST /knowledge/articles` + `/publish`.
 3. Estado/API:
-   - Store `knowledgeSlice` com actions `fetchPortal(slug)`, `fetchArticle`, `submitFeedback`, `createArticle`.
-   - Suporte a i18n (mostrar artigos por idioma preferido).
-4. UX: componentes com skeleton loading, tags, badges “Atualizado em”. Feedback confirma via toast.
+   - NgRx `KnowledgeState` (`portals`, `articles`, `loading`); effects `loadPortal`, `searchArticles`, `submitFeedback`, `createArticle`.
+   - Services `KnowledgeApiService` e `QuickRepliesService` reaproveitando interceptors.
+   - Suporte i18n (filtrar artigos por idioma preferido do usuário).
+4. UX/A11y:
+   - Skeletons, tags, badge “Atualizado em”.
+   - Toasts para feedback enviado, validações de formulário.
 
 ## Testes
-- `npm run test` — suites `KnowledgePortal.test.tsx`, `KnowledgeArticle.test.tsx` (mock API + i18n).
-- Teste manual do fluxo publish → article aparece no portal.
+- `npm run lint`.
+- `npm run test` — `knowledge-portal.component.spec.ts`, `knowledge-article.component.spec.ts`, `knowledge.effects.spec.ts`.
+- Teste manual: publicar artigo (ambiente dev) e verificar exibição no portal público/interno.
 
 ## Checklist ao concluir
-- ✅ Tests passando.
-- ✅ Integração com backend (mock/real) funcional.
-- ✅ README plano atualizado + docs (se snippet/guia).
+- ✅ Tests/lint passando (container `frontend`).
+- ✅ Fluxos publish/feedback funcionais.
+- ✅ README plano atualizado + docs (se necessário prints ou instruções).
+- ✅ Se novos endpoints/backend foram criados/ajustados, atualizar documentação OpenAPI (B003) e módulos correspondentes.
 
 ## Referências
 - `docs/development_guidelines.md`

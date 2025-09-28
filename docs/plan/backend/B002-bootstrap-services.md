@@ -1,5 +1,7 @@
 # B002 — Configurar Serviços de Suporte
 
+**Status:** ✅ Concluído em 27/09/2025
+
 ## Objetivo
 Configurar infraestrutura básica de serviços (Celery, Channels, serviços seeds) para suportar módulos tempo real/eventos.
 
@@ -11,7 +13,7 @@ Configurar infraestrutura básica de serviços (Celery, Channels, serviços seed
    - Notificações (templates/regras padrão).
    - Automation intake flow básico.
 4. Atualizar `docker-compose` com workers (celery worker/beat) e channel layer.
-5. Adicionar comandos `make`/scripts para iniciar stack: `make start-backend`, `make start-workers`.
+5. Documentar no README comandos `docker compose` para iniciar backend e workers.
 
 ## Pontos de Atenção
 - Respeitar seeds obrigatórios descritos em `development_guidelines.md` (Gamificação, Notificações, Automation).

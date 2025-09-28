@@ -5,6 +5,7 @@
 - Ambiente padrão: `docker-compose up` deve ser suficiente para iniciar stack mínima (Postgres, Redis, Django, Channels, Celery, Ionic). Não introduzir dependências extras sem atualizar o compose.
 - A stack Docker fica disponível durante o desenvolvimento; utilize os containers (backend, workers, frontend) para executar testes, migrations e validações, evitando rodar serviços locais separados.
 - **Migrations:** nunca crie arquivos de migration manualmente. Gere sempre via `python manage.py makemigrations` dentro do container backend (`docker compose exec backend python manage.py makemigrations`) e valide com `migrate` no mesmo ambiente.
+- Frontend também deve rodar dentro do container (`docker compose exec frontend npm run start/test/build`). Evite rodar `ionic serve` diretamente na máquina local para manter consistência.
 - Trabalhe sempre em português nas comunicações internas (commits, docs) e mantenha neutralidade/clareza técnica.
 - Nenhuma configuração inicial é exigida para módulos como Gamificação ou Notificações: eles devem funcionar com seeds padrão.
 

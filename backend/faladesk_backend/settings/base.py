@@ -20,6 +20,7 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.
 SHARED_APPS = [
     "django_tenants",
     "apps.organizations",
+    "channels",
     "django.contrib.contenttypes",
 ]
 
@@ -104,6 +105,16 @@ CACHES = {
         "LOCATION": CACHE_REDIS_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+CHANNEL_REDIS_URL = env("CHANNEL_REDIS_URL", default=CACHE_REDIS_URL)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [CHANNEL_REDIS_URL],
         },
     }
 }

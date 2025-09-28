@@ -27,6 +27,7 @@ Antes de atuar, leia:
 - Cada tarefa deve incluir comandos de teste executados e manter o projeto funcional via `docker-compose up`.
 - A stack Docker permanece disponível durante o desenvolvimento; utilize os containers (`backend`, `workers`, `frontend`) para rodar testes, lint, builds e validações descritas nas tarefas.
 - Gere migrations sempre dentro do container backend usando `python manage.py makemigrations` (nunca crie migrations manualmente).
+- Frontend também deve ser executado/testado via container `frontend` (ex.: `docker compose exec frontend npm run test`). Não rodar comandos diretamente no host para manter consistência.
 
 ## 5. Próximos Passos Recomendados
 1. Verificar backlog em `docs/plan/backend/` e selecionar a tarefa ainda pendente (Bxxx) mais prioritária.

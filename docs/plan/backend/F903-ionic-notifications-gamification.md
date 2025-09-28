@@ -1,31 +1,32 @@
-# F903 — Notificações & Gamificação no Ionic
+# F903 — Notificações & Gamificação (Ionic Angular)
 
 ## Objetivo
-Integrar notificações in-app/push e dashboard gamificação (pontos, badges, leaderboard) na interface Ionic.
+Implementar centro de notificações in-app/push e dashboard gamificação (pontos, badges, leaderboard) consumindo APIs de notifications/gamification.
 
 ## Escopo
-1. Notificações:
-   - Implementar serviço `useNotifications` consumindo `/notifications/inbox` + WebSocket dedicado (`ws/{tenant_slug}/notifications`).
-   - Criar componente `NotificationCenter` (ícone sino com badge, lista dropdown, tela detalhada).
-   - Configurar push (Capacitor Push) stub — exibir console log/alerta se push não implementado.
-   - Ações (marcar como lido, arquivar) → `PATCH /notifications/{id}/read`.
-2. Gamificação:
-   - Tela/Widget `GamificationDashboard` mostrando pontos atuais, nível, badges, leaderboard top 5.
-   - Consumir `/gamification/profile/me`, `/gamification/leaderboards/current`.
-   - Mostrar feedbacks recentes (peer/customer) e CTA para dar kudos.
-3. Integração com Inbox:
-   - Quando conversa/ticket gera notificação crítica (SLA), exibir banner/alert context na conversa.
-4. Internacionalização: garantir textos notificação/gamificação com i18n (PT/EN/ES).
-5. UX Tests: garantir acessibilidade (ARIA) no NotificationCenter e Gamification dashboard.
+1. Estado (NgRx):
+   - Feature `NotificationsState` (`inbox`, `unreadCount`, `loading`). Effects para `loadInbox`, `markAsRead`, `archiveNotification`, `loadDigest` usando endpoints `/notifications`.
+   - Feature `GamificationState` (`profile`, `leaderboard`, `challenges`). Effects `loadProfile`, `loadLeaderboard`, `sendPeerFeedback`.
+2. Serviços:
+   - `NotificationsService` (REST) e `NotificationsSocketService` (WebSocket `ws/{tenant_slug}/notifications`).
+   - `GamificationService` consumindo `/gamification/profile/me`, `/gamification/leaderboards/current`, `/gamification/feedback`.
+3. Componentes:
+   - `notification-bell`, `notification-center`, `notification-detail` (com filtros, busca, mark all).
+   - `gamification-dashboard`, `gamification-challenges`, `leaderboard-widget`.
+   - Integrar push notifications (Capacitor) via service `PushService` (stub em ambiente dev).
+4. UX/i18n:
+   - i18n PT/EN/ES, a11y (ARIA), animações leves para conquistas.
+   - Banner no inbox quando alerta SLA ou kudos chegar.
 
 ## Testes
-- `npm run test` para componentes `NotificationCenter.test.tsx`, `GamificationDashboard.test.tsx` (mocks API/WebSocket).
-- Teste manual push stub (capacitador) e confirmações de estilo.
+- `npm run lint`, `npm run test` com specs `notification-center.component.spec.ts`, `gamification-dashboard.component.spec.ts`, `notifications.effects.spec.ts`, `gamification.effects.spec.ts`.
+- Teste manual integrando backend seeds.
 
 ## Checklist ao concluir
-- ✅ Tests UI passando.
-- ✅ Integração com backend (mock/real) funcional.
-- ✅ README plano atualizado + docs (se necessário, instruções de push setup).
+- ✅ Tests/lint no container `frontend`.
+- ✅ WebSocket/push (stub) funcionando.
+- ✅ README plano atualizado.
+- ✅ Caso novos endpoints backend sejam criados/alterados, atualizar documentação OpenAPI (B003) e demais docs.
 
 ## Referências
 - `docs/development_guidelines.md`

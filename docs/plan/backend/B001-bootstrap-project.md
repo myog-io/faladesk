@@ -1,5 +1,7 @@
 # B001 — Bootstrap do Projeto Django
 
+**Status:** ✅ Concluído em 27/09/2025
+
 ## Objetivo
 Criar a base do projeto Django multi-tenant seguindo as diretrizes de desenvolvimento.
 
