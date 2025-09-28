@@ -17,19 +17,24 @@ jobs:
           POSTGRES_PASSWORD: faladesk
         options: >-
           --health-cmd "pg_isready -U faladesk" --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 5432:5432
       redis:
         image: redis:7-alpine
+        ports:
+          - 6379:6379
     env:
       POSTGRES_DB: faladesk
       POSTGRES_USER: faladesk
       POSTGRES_PASSWORD: faladesk
-      POSTGRES_HOST: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: "5432"
       DJANGO_SECRET_KEY: ci-secret-key
       DJANGO_DEBUG: "False"
-      REDIS_URL: redis://redis:6379/0
-      CELERY_BROKER_URL: redis://redis:6379/0
-      CELERY_RESULT_BACKEND: redis://redis:6379/0
-      CHANNEL_REDIS_URL: redis://redis:6379/1
+      REDIS_URL: redis://localhost:6379/0
+      CELERY_BROKER_URL: redis://localhost:6379/0
+      CELERY_RESULT_BACKEND: redis://localhost:6379/0
+      CHANNEL_REDIS_URL: redis://localhost:6379/1
     steps:
       - uses: actions/checkout@v4
 
