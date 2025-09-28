@@ -30,6 +30,12 @@ cp .env.example .env
    docker compose up -d celery_worker celery_beat
    ```
 
+5. **(Frontend) Iniciar Ionic Angular:**
+   ```bash
+   docker compose up -d frontend
+   ```
+   > Após a instalação das dependências, a aplicação estará disponível em `http://localhost:8100`. Use `docker compose exec frontend npm run test` para executar testes no container.
+
 > O backend (Daphne/ASGI) fica disponível em `http://localhost:8000`. Logs em tempo real podem ser acompanhados com `docker compose logs -f <service>`.
 
 ## Ambiente local com Python

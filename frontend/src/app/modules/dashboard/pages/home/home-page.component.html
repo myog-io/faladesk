@@ -1,0 +1,17 @@
+<ion-header collapse="fade">
+  <ion-toolbar color="primary">
+    <ion-title>{{ 'layout.welcome' | transloco: { name: (user$ | async)?.fullName || (user$ | async)?.email } }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Faladesk</ion-card-subtitle>
+      <ion-card-title>Workspace</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Este é o layout inicial da aplicação. A partir daqui serão carregados os módulos funcionais.</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
