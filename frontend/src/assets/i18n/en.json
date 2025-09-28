@@ -1,0 +1,26 @@
+{
+  "auth": {
+    "title": "Access Faladesk",
+    "magicLink": {
+      "request": {
+        "heading": "Send magic link",
+        "description": "Provide your work e-mail to receive an access link.",
+        "email": "E-mail",
+        "submit": "Send link",
+        "success": "Link sent! Check your inbox.",
+        "error": "Could not send the link. Please try again later."
+      },
+      "confirm": {
+        "heading": "Validate magic link",
+        "description": "Paste the token received by e-mail to finish signing in.",
+        "token": "Token",
+        "submit": "Confirm access",
+        "error": "Invalid or expired token."
+      }
+    }
+  },
+  "layout": {
+    "welcome": "Welcome, {{name}}",
+    "logout": "Sign out"
+  }
+}

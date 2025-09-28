@@ -1,0 +1,10 @@
+{
+  "name": "Faladesk",
+  "short_name": "Faladesk",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": []
+}

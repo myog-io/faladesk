@@ -1,0 +1,40 @@
+<ion-content class="ion-padding">
+  <div class="auth-card">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ 'auth.magicLink.request.heading' | transloco }}</ion-card-title>
+        <ion-card-subtitle>{{ 'auth.magicLink.request.description' | transloco }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <ion-item>
+            <ion-label position="floating">{{ 'auth.magicLink.request.email' | transloco }}</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="form.controls.email.invalid && form.controls.email.touched">
+            {{ 'auth.magicLink.request.error' | transloco }}
+          </ion-note>
+
+          <ion-button expand="block" type="submit" [disabled]="requesting$ | async">
+            <ion-spinner slot="start" *ngIf="requesting$ | async"></ion-spinner>
+            {{ 'auth.magicLink.request.submit' | transloco }}
+          </ion-button>
+        </form>
+
+        <ion-item lines="none" color="success" *ngIf="message$ | async as message">
+          <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+          <ion-label>{{ message }}</ion-label>
+        </ion-item>
+
+        <ion-item lines="none" color="danger" *ngIf="error$ | async as error">
+          <ion-icon slot="start" name="warning"></ion-icon>
+          <ion-label>{{ error }}</ion-label>
+        </ion-item>
+
+        <ion-button fill="clear" routerLink="../magic-link-confirm">
+          {{ 'auth.magicLink.confirm.heading' | transloco }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -6,7 +6,7 @@
 - Integração com documentação: se consumir novos endpoints, garantir que backend (B003) esteja atualizado.
 
 ## Fase 9 — Base Ionic
-- F901 — Bootstrap Ionic Angular
+- ✅ F901 — Bootstrap Ionic Angular
 - F902 — Inbox Unificada
 - F903 — Notificações & Gamificação
 
