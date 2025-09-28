@@ -17,13 +17,14 @@ Construir ingestão e processamento básico de eventos analytics (`analytics_eve
 4. Instrumentar modules core para emitir evento stub (ex.: quando conversa é criada ou ticket resolvido) — use mocks se dependências ainda não prontas.
 
 ## Testes
-- `pytest analytics/tests/test_pipeline.py` — `record_event`, `process_event`, `update_snapshot` com dados fake.
-- `pytest analytics/tests/test_tasks.py` — tasks Celery (usar `celery_worker` fixture ou mock delay).
+- `docker compose exec backend pytest analytics/tests/test_pipeline.py` — `record_event`, `process_event`, `update_snapshot` com dados fake.
+- `docker compose exec backend pytest analytics/tests/test_tasks.py` — tasks Celery (usar `celery_worker` fixture ou mock delay).
 
 ## Checklist ao concluir
 - ✅ Tests analytics passando.
 - ✅ Seeds/job scheduler configurados.
 - ✅ README plano atualizado e docs se necessário (`docs/modules/analytics.md`).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

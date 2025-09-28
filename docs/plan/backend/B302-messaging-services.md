@@ -17,13 +17,14 @@ Implementar serviços core responsáveis por atualizar estado da conversa, calcu
 4. Atualizar seeds demo para chamar serviços onde fizer sentido (demonstra fluxo real).
 
 ## Testes
-- `pytest messaging/tests/test_services.py` validando funções serviço (usando factories + mocks para analytics/notifications).
+- `docker compose exec backend pytest messaging/tests/test_services.py` validando funções serviço (usando factories + mocks para analytics/notifications).
 - Cobrir casos edge (primeira resposta, reabertura, timers).
 
 ## Checklist ao concluir
-- ✅ Tests passando (`pytest messaging/tests/test_services.py`).
+- ✅ Tests passando (`docker compose exec backend pytest messaging/tests/test_services.py`).
 - ✅ Mocks/asserts confirmam emissão de eventos (analytics/notifications/gamification se aplicável).
 - ✅ README do plano atualizado.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

@@ -16,13 +16,14 @@ Criar serviços responsáveis por fluxo de tickets (criação a partir de conver
 4. Seeds demo: usar serviços para gerar ticket de exemplo (consistencia com messaging seeds).
 
 ## Testes
-- `pytest tickets/tests/test_workflow.py` cobrindo criação, mudança status, assign, worklog (mocks para analytics/notifications/gamification).
+- `docker compose exec backend pytest tickets/tests/test_workflow.py` cobrindo criação, mudança status, assign, worklog (mocks para analytics/notifications/gamification).
 - Garantir idempotência do fluxo `create_ticket_from_conversation` (não duplicar tickets para mesma conversation se já existe).
 
 ## Checklist ao concluir
-- ✅ Tests passando (`pytest tickets/tests/test_workflow.py`).
+- ✅ Tests passando (`docker compose exec backend pytest tickets/tests/test_workflow.py`).
 - ✅ Emissão de eventos validada via mocks/asserts.
 - ✅ README do plano atualizado.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

@@ -14,16 +14,17 @@ Implementar models/serviços do módulo `channels` (connectors, accounts, capabi
    - `activate_account(account)` (valida config, registra health check inicial).
    - `record_usage(connector, type, quantidade)` para analytics.
    - `refresh_token(connector)` stub (simular refresh, logs auditáveis).
-4. Comando `python manage.py seed_channels_defaults` idempotente.
+4. Comando `docker compose exec backend python manage.py seed_channels_defaults` idempotente.
 
 ## Testes
-- `pytest channels/tests/test_models.py` — criação connectors/accounts/capabilities, constraints multi-tenant.
-- `pytest channels/tests/test_services.py` — activate_account, record_usage, refresh_token (mock external).
+- `docker compose exec backend pytest channels/tests/test_models.py` — criação connectors/accounts/capabilities, constraints multi-tenant.
+- `docker compose exec backend pytest channels/tests/test_services.py` — activate_account, record_usage, refresh_token (mock external).
 
 ## Checklist ao concluir
 - ✅ Tests passando.
 - ✅ Seeds executáveis.
 - ✅ README plano atualizado + docs (`docs/modules/channels.md`).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

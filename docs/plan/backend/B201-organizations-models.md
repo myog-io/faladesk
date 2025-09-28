@@ -17,14 +17,15 @@ Implementar modelos e migrations do módulo `organizations` (org_unit, schedules
    - RLS (consultar guidelines) — garantir QuerySet filtra por `tenant_id`.
 
 ## Testes
-- `pytest organizations/tests/test_models.py` cobrindo criação de OrgUnit, Schedules, SLA, event deadlines.
-- `pytest organizations/tests/test_seeds.py` validando comando de seed (ou fixture) gera dados default sem duplicar.
+- `docker compose exec backend pytest organizations/tests/test_models.py` cobrindo criação de OrgUnit, Schedules, SLA, event deadlines.
+- `docker compose exec backend pytest organizations/tests/test_seeds.py` validando comando de seed (ou fixture) gera dados default sem duplicar.
 
 ## Checklist ao concluir
-- ✅ Tests passando (`pytest organizations`).
-- ✅ Seeds executáveis (`python manage.py seed_organizations`).
+- ✅ Tests passando (`docker compose exec backend pytest organizations`).
+- ✅ Seeds executáveis (`docker compose exec backend python manage.py seed_organizations`).
 - ✅ Atualizar `docs/plan/backend/README.md` com status/observações.
 - ✅ Ajustar `docs/03-modelo-dados.md` caso algum campo extra seja necessário.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

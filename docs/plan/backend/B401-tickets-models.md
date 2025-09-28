@@ -17,14 +17,15 @@ Implementar modelo de tickets completo (tickets, categorias, assignments, status
 4. Service helper para gerar número de ticket (`tickets.utils.generate_ticket_number`), usado em `Ticket.save()`.
 
 ## Testes
-- `pytest tickets/tests/test_models.py` — cria ticket completo, verifica history/assignments/worklogs/custom fields.
-- `pytest tickets/tests/test_number_generator.py` — garante formato `TK-YYYY-NNNN` ou similar, sem colisão multi-tenant.
+- `docker compose exec backend pytest tickets/tests/test_models.py` — cria ticket completo, verifica history/assignments/worklogs/custom fields.
+- `docker compose exec backend pytest tickets/tests/test_number_generator.py` — garante formato `TK-YYYY-NNNN` ou similar, sem colisão multi-tenant.
 
 ## Checklist ao concluir
 - ✅ Tests passando.
-- ✅ Seeds executáveis (`python manage.py seed_tickets_demo`).
+- ✅ Seeds executáveis (`docker compose exec backend python manage.py seed_tickets_demo`).
 - ✅ README do plano atualizado com status/comandos.
 - ✅ Revisar `docs/03-modelo-dados.md` para confirmar alinhamento.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

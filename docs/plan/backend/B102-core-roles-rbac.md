@@ -18,15 +18,16 @@ Implementar controle de papéis e permissões seguindo boas práticas (roles cus
 5. Atualizar seeds/fixtures (management command) para inserir roles e permissões padrões (idempotente).
 
 ## Testes
-- `pytest core/tests/test_roles.py` cobrindo criação de roles, assignments, limites multi-tenant.
+- `docker compose exec backend pytest core/tests/test_roles.py` cobrindo criação de roles, assignments, limites multi-tenant.
 - Testes de permissão em viewsets (permitido/proibido) com `APIClient`.
 - Garantir que roles `is_system` não possam ser excluídos.
 
 ## Checklist ao concluir
-- ✅ Tests passando (`pytest core/tests/test_roles.py`).
-- ✅ Seeds executáveis sem duplicar dados (`python manage.py seed_roles`).
+- ✅ Tests passando (`docker compose exec backend pytest core/tests/test_roles.py`).
+- ✅ Seeds executáveis sem duplicar dados (`docker compose exec backend python manage.py seed_roles`).
 - ✅ Atualizar `docs/plan/backend/README.md` (marcar tarefa, registrar comandos).
 - ✅ Revisar se `docs/modules/core.md` e `docs/03-modelo-dados.md` continuam coerentes.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

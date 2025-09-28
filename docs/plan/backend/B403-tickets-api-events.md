@@ -17,14 +17,15 @@ Expor endpoints REST para tickets (CRUD, comentários, anexos, worklogs) e confi
 5. Atualizar OpenAPI/Schema e documentação (`docs/modules/tickets.md` se necessário).
 
 ## Testes
-- `pytest tickets/tests/test_api_tickets.py` — CRUD, filtros, permissões.
-- `pytest tickets/tests/test_api_webhook.py` — ingestão externa com payload válido/inválido.
+- `docker compose exec backend pytest tickets/tests/test_api_tickets.py` — CRUD, filtros, permissões.
+- `docker compose exec backend pytest tickets/tests/test_api_webhook.py` — ingestão externa com payload válido/inválido.
 - Verificar uploads attachments com storage mock/Fake S3.
 
 ## Checklist ao concluir
 - ✅ Tests API passando.
 - ✅ Webhook validado com assinatura opcional (mock).
 - ✅ README do plano atualizado e docs (endpoints adicionados).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

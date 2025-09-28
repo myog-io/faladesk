@@ -13,13 +13,14 @@ Centralizar mixins, helpers, autenticação e utilidades reutilizados entre mód
 4. Documentar no módulo correspondente (ex.: `docs/development_guidelines.md`) para que futuros módulos consumam o pacote.
 
 ## Testes
-- `pytest shared/tests/test_utils.py` cobrindo helpers.
+- `docker compose exec backend pytest shared/tests/test_utils.py` cobrindo helpers.
 - Rodar suites impactadas para garantir compatibilidade (core/tickets/messaging).
 
 ## Checklist ao concluir
 - ✅ Estrutura `shared/` criada.
 - ✅ Tests passando.
 - ✅ README plano atualizado (status/comandos) + docs se necessário.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

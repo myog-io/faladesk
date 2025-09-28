@@ -14,13 +14,14 @@ Implementar logging/auditoria estruturada (`AuditLog`) para registrar eventos im
 5. Configurar logging estruturado (JSON) com `tenant_id`, `correlation_id` (utilizar `structlog` ou Python logging + formatter).
 
 ## Testes
-- `pytest core/tests/test_audit.py` validando log_event, filtro multi-tenant, proteção de endpoint.
+- `docker compose exec backend pytest core/tests/test_audit.py` validando log_event, filtro multi-tenant, proteção de endpoint.
 - Confirmar que eventos principais geram linha de auditoria (testes integrados em auth/roles).
 
 ## Checklist ao concluir
-- ✅ Tests audit passando (`pytest core/tests/test_audit.py`).
+- ✅ Tests audit passando (`docker compose exec backend pytest core/tests/test_audit.py`).
 - ✅ Endpoint `/audit/logs` funcional e protegido.
 - ✅ Documentar no README do plano (status + comandos) e, se necessário, em docs adicionais.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

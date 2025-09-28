@@ -8,7 +8,7 @@
 ## Fase 0 — Bootstrap
 - B001 — Bootstrap do Projeto Django
 - B002 — Configuração de Serviços (Celery/Channels)
-- B003 — OpenAPI/Swagger & Postman (documentação automática)
+- ✅ B003 — OpenAPI/Swagger & Postman (documentação automática)
 - B004 — Shared Utils & Auth Base
 
 ## Fase 1 — Core (Auth/RBAC/Audit)
@@ -59,3 +59,7 @@
 ### Boas práticas
 - Sempre documente endpoints/alterações no schema OpenAPI (B003) quando criar/ajustar APIs.
 - Após concluir qualquer tarefa, atualizar `docs/plan/backend/README.md` (status ✅/⏳) e incluir comandos executados.
+
+### Histórico de Comandos — B003
+- `docker compose exec backend python manage.py spectacular --file schema.yaml` _(pendente: executar após instalar dependências)_
+- `docker compose exec backend python manage.py generate_openapi_postman`

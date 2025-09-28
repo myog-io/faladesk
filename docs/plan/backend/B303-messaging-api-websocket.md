@@ -17,13 +17,14 @@ Expor endpoints REST/WebSocket para inbox unificada, incluindo real-time updates
 5. Atualizar `ASGI`/routing, registrar `channels_routing.py`.
 
 ## Testes
-- `pytest messaging/tests/test_api_conversations.py` (CRUD, filtros, permissões, integridade).
-- `pytest messaging/tests/test_ws_conversations.py` (Channels LiveServerTestCase ou pytest-asyncio) cobrindo recebimento em tempo real.
+- `docker compose exec backend pytest messaging/tests/test_api_conversations.py` (CRUD, filtros, permissões, integridade).
+- `docker compose exec backend pytest messaging/tests/test_ws_conversations.py` (Channels LiveServerTestCase ou pytest-asyncio) cobrindo recebimento em tempo real.
 
 ## Checklist ao concluir
 - ✅ Tests API e WS passando.
 - ✅ WebSocket consumer conectado ao serviço B302 (mock/outgoing events).
 - ✅ README do plano atualizado e docs (se endpoints são novos, garantir listagem em docs).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

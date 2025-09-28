@@ -17,14 +17,15 @@ Implementar pipeline de notificações (preferências, regras, fila, envio multi
 5. Web push/email stubs: usar console e `print` por enquanto; registrar `notification_channel_token` (mock de device token).
 
 ## Testes
-- `pytest notifications/tests/test_engine.py` — preferências, quiet hours, dedupe.
-- `pytest notifications/tests/test_tasks.py` — queue e digest.
-- `pytest notifications/tests/test_api.py` — inbox endpoints.
+- `docker compose exec backend pytest notifications/tests/test_engine.py` — preferências, quiet hours, dedupe.
+- `docker compose exec backend pytest notifications/tests/test_tasks.py` — queue e digest.
+- `docker compose exec backend pytest notifications/tests/test_api.py` — inbox endpoints.
 
 ## Checklist ao concluir
 - ✅ Tests passando.
 - ✅ Seeds executáveis (`seed_notifications_defaults`).
 - ✅ README plano atualizado + docs (`docs/modules/notifications.md`).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

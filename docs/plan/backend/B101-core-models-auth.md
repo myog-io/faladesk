@@ -18,15 +18,16 @@ Implementar modelos fundamentais (tenant, tenant_domain, user, tenant_user, tena
 5. Atualizar `settings` para suportar modelo custom de usuário e JWT config.
 
 ## Testes
-- `pytest core/tests/test_models.py` cobrindo criação de tenant/user e constraints multi-tenant.
-- `pytest core/tests/test_auth.py` cobrindo fluxo magic link (solicitação + troca por token).
-- Rodar `python manage.py makemigrations` / `migrate` para validar migrations.
+- `docker compose exec backend pytest core/tests/test_models.py` cobrindo criação de tenant/user e constraints multi-tenant.
+- `docker compose exec backend pytest core/tests/test_auth.py` cobrindo fluxo magic link (solicitação + troca por token).
+- Rodar `docker compose exec backend python manage.py makemigrations` / `migrate` para validar migrations.
 
 ## Checklist ao concluir
-- ✅ Tests passando (`pytest core`).
-- ✅ Seeds/fixtures executáveis (`python manage.py loaddata` ou comando custom).
+- ✅ Tests passando (`docker compose exec backend pytest core`).
+- ✅ Seeds/fixtures executáveis (`docker compose exec backend python manage.py loaddata` ou comando custom).
 - ✅ Documentar no `docs/plan/backend/README.md` (marcar tarefa como concluída e registrar comandos executados).
 - ✅ Atualizar `docs/03-modelo-dados.md` se houver mudanças relevantes (ex.: campos adicionais).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

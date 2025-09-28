@@ -16,13 +16,14 @@ Construir modelos e migrations do módulo `internal_chat` (canais, threads, mens
    - Service helper `generate_channel_slug` e `start_voice_session` stub.
 
 ## Testes
-- `pytest internal_chat/tests/test_models.py` — criação canais/threads/mensagens/voz, validações.
-- `pytest internal_chat/tests/test_seeds.py` — seeds idempotentes.
+- `docker compose exec backend pytest internal_chat/tests/test_models.py` — criação canais/threads/mensagens/voz, validações.
+- `docker compose exec backend pytest internal_chat/tests/test_seeds.py` — seeds idempotentes.
 
 ## Checklist ao concluir
 - ✅ Tests passando.
-- ✅ Seeds executáveis (`python manage.py seed_internal_chat`).
+- ✅ Seeds executáveis (`docker compose exec backend python manage.py seed_internal_chat`).
 - ✅ README plano atualizado + docs (`docs/modules/internal_chat.md`).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

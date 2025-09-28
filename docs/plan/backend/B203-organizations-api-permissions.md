@@ -18,8 +18,8 @@ Expor endpoints REST para gerenciar org units, horários, SLA e escalonamentos, 
 5. Atualizar seeds/test fixtures conforme novos endpoints (ex.: roles com `organizations.manage`).
 
 ## Testes
-- `pytest organizations/tests/test_api_org_units.py` (CRUD + permissões).
-- `pytest organizations/tests/test_api_sla.py` (validações e eventos).
+- `docker compose exec backend pytest organizations/tests/test_api_org_units.py` (CRUD + permissões).
+- `docker compose exec backend pytest organizations/tests/test_api_sla.py` (validações e eventos).
 - Use `APIClient` com usuários diferentes (Admin vs Agente) para garantir escopo.
 
 ## Checklist ao concluir
@@ -27,6 +27,7 @@ Expor endpoints REST para gerenciar org units, horários, SLA e escalonamentos, 
 - ✅ Eventos emitidos (simular `analytics_event` via assert/patch).
 - ✅ README do plano atualizado e, se necessário, docs gerais (ex.: endpoints listados).
 - ✅ Conferir `development_guidelines.md` para ver se novas regras precisam ser adicionadas (caso tenha surgido dependência).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

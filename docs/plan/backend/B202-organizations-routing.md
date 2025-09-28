@@ -13,14 +13,15 @@ Implementar fila de roteamento (`QueueRule`, `OrgUnitEscalation`) e serviço rel
 5. Criar command ou Celery task stub `organizations.tasks.evaluate_queue(conversation_id)` chamando serviço (será acionado por automations depois).
 
 ## Testes
-- `pytest organizations/tests/test_routing.py` cobrindo resolução de QueueRule com diferentes contextos.
-- `pytest organizations/tests/test_escalation.py` cobrindo mudança de org unit ao violar SLA.
+- `docker compose exec backend pytest organizations/tests/test_routing.py` cobrindo resolução de QueueRule com diferentes contextos.
+- `docker compose exec backend pytest organizations/tests/test_escalation.py` cobrindo mudança de org unit ao violar SLA.
 
 ## Checklist ao concluir
-- ✅ Tests passando (`pytest organizations/tests/test_routing.py` etc.).
+- ✅ Tests passando (`docker compose exec backend pytest organizations/tests/test_routing.py` etc.).
 - ✅ Seeds/fixtures atualizados sem duplicar dados.
 - ✅ README do plano atualizado com progresso/comandos executados.
 - ✅ Documentar eventuais helpers em `development_guidelines.md` se necessário (ex.: parser de condições).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

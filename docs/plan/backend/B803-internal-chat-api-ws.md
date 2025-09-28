@@ -16,13 +16,14 @@ Expor APIs REST e WebSocket para canais de texto/voz, DMs, e presença, integran
 4. WebRTC integration stub (scripts front) — gerar token temporário, logs.
 
 ## Testes
-- `pytest internal_chat/tests/test_api.py` — canais, DMs, voz endpoints.
-- `pytest internal_chat/tests/test_ws.py` — websockets (texto/voz) com Channels test client.
+- `docker compose exec backend pytest internal_chat/tests/test_api.py` — canais, DMs, voz endpoints.
+- `docker compose exec backend pytest internal_chat/tests/test_ws.py` — websockets (texto/voz) com Channels test client.
 
 ## Checklist ao concluir
 - ✅ Tests passando (API + WS).
 - ✅ Signalização integrada com serviços e notificações.
 - ✅ README plano atualizado.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

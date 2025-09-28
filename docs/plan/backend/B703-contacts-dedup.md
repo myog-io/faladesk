@@ -15,14 +15,15 @@ Implementar serviços de deduplicação/merge de contatos (multi-identidade), no
 4. Integrar com analytics/gamificação (opcional): registrar evento `contact.merged`.
 
 ## Testes
-- `pytest contacts/tests/test_identity.py` — normalize_identity.
-- `pytest contacts/tests/test_merge.py` — find duplicates, merge, garantir transferência de conversas/tickets.
-- `pytest contacts/tests/test_api_merge.py` — rotas merge/duplicates.
+- `docker compose exec backend pytest contacts/tests/test_identity.py` — normalize_identity.
+- `docker compose exec backend pytest contacts/tests/test_merge.py` — find duplicates, merge, garantir transferência de conversas/tickets.
+- `docker compose exec backend pytest contacts/tests/test_api_merge.py` — rotas merge/duplicates.
 
 ## Checklist ao concluir
 - ✅ Tests passando.
 - ✅ Seeds dedupe executáveis.
 - ✅ README plano atualizado + docs (`docs/modules/contacts.md`).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

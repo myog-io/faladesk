@@ -22,6 +22,7 @@ SHARED_APPS = [
     "apps.organizations",
     "channels",
     "django.contrib.contenttypes",
+    "drf_spectacular",
 ]
 
 TENANT_APPS = [
@@ -33,6 +34,7 @@ TENANT_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "drf_spectacular",
     "django_filters",
     "apps.core",
     "apps.channels",
@@ -167,6 +169,20 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Faladesk API",
+    "DESCRIPTION": "Documentação oficial das APIs omnichannel do Faladesk.",
+    "VERSION": "0.1.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
+    "SERVE_AUTHENTICATION": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "SCHEMA_PATH_PREFIX": "/api",
 }
 
 LOGGING = {

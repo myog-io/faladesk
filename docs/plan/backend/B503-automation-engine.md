@@ -19,14 +19,15 @@ Implementar componentes mínimos do motor de automação (flows, triggers, nodes
    - Garantir `analytics_event` `automation.flow_run` e `notification_queue` quando flow falhar.
 
 ## Testes
-- `pytest automation/tests/test_engine.py` — execuções simples, nodes básicos, registros de run/steps.
-- `pytest automation/tests/test_api_webhook.py` — ingestão via webhook, assinatura inválida, etc.
-- Teste seeds: `python manage.py seed_automation_default` — verificar que flow default roda (mock context).
+- `docker compose exec backend pytest automation/tests/test_engine.py` — execuções simples, nodes básicos, registros de run/steps.
+- `docker compose exec backend pytest automation/tests/test_api_webhook.py` — ingestão via webhook, assinatura inválida, etc.
+- Teste seeds: `docker compose exec backend python manage.py seed_automation_default` — verificar que flow default roda (mock context).
 
 ## Checklist ao concluir
 - ✅ Tests passando.
 - ✅ Seeds executáveis e flow intake funcional.
 - ✅ README do plano atualizado e, se necessário, docs (módulo automation).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

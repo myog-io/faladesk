@@ -21,6 +21,12 @@
   - [Módulo: Tags](modules/tags.md)
   - [Módulo: Internal Chat](modules/internal_chat.md)
 
+## API
+- **Swagger UI:** `http://localhost:8000/api/schema/swagger-ui/`
+- **Redoc:** `http://localhost:8000/api/schema/redoc/`
+- **OpenAPI Schema:** `http://localhost:8000/api/schema/`
+- **Postman Collection:** `docs/api/postman_collection.json` (regenerar via `python manage.py generate_openapi_postman`)
+
 ## Como usar
 - Revise os requisitos antes de ajustar modelo ou fluxos.
 - Consulte o ERD e fluxos para alinhar implementações backend/frontend.

@@ -10,7 +10,7 @@ Preparar plano de release MVP, checklist de verificação, comunicação e monit
    - Observabilidade: dashboards analytics, alerts notificação, logs audit.
    - Segurança/LGPD: rotinas de retenção, consentimento, anonimizador pronto.
    - Rollback plan.
-2. Script/command `python manage.py release_check` (stub) validando seeds, migrations pendentes, status workers.
+2. Script/command `docker compose exec backend python manage.py release_check` (stub) validando seeds, migrations pendentes, status workers.
 3. Playbook de comunicação: arquivo `docs/release/communication.md` com stakeholders, mensagens (internas/externas).
 4. Atualizar README principal com link para release docs e instruções resumidas.
 
@@ -21,6 +21,7 @@ Preparar plano de release MVP, checklist de verificação, comunicação e monit
 - ✅ Documentos criados (`docs/release/*`).
 - ✅ Script release_check funcional.
 - ✅ README plano atualizado.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

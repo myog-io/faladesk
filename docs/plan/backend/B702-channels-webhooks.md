@@ -17,13 +17,14 @@ Implementar ingestão inbound/outbound de canais (webhooks, polling) e integraç
 4. Atualizar seeds para registrar webhooks URLs (mock) e tokens assinaturas.
 
 ## Testes
-- `pytest channels/tests/test_webhooks.py` — inbound message, status update, assinatura inválida.
-- `pytest channels/tests/test_polling.py` — task de polling (mock).
+- `docker compose exec backend pytest channels/tests/test_webhooks.py` — inbound message, status update, assinatura inválida.
+- `docker compose exec backend pytest channels/tests/test_polling.py` — task de polling (mock).
 
 ## Checklist ao concluir
 - ✅ Tests passando.
 - ✅ Eventos encaminhados para automations (mock Celery delay/assert).
 - ✅ README plano atualizado.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

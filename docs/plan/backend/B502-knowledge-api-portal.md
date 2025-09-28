@@ -14,13 +14,14 @@ Construir endpoints REST para gestão de quick replies, artigos e portais, além
 5. Atualizar seeds/drafts para usar API (ex.: script que cria artigo via endpoint).
 
 ## Testes
-- `pytest knowledge/tests/test_api_articles.py` — CRUD, publish, feedback, permissões.
-- `pytest knowledge/tests/test_api_portal.py` — consulta portal público e interno.
+- `docker compose exec backend pytest knowledge/tests/test_api_articles.py` — CRUD, publish, feedback, permissões.
+- `docker compose exec backend pytest knowledge/tests/test_api_portal.py` — consulta portal público e interno.
 
 ## Checklist ao concluir
 - ✅ Tests API passando.
 - ✅ Notificações/gamificação emitter via mocks/asserts.
 - ✅ README do plano atualizado + docs (se endpoints novos, listar).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

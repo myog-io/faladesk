@@ -1,4 +1,4 @@
-# DX01 — Documentação OpenAPI/Swagger & Postman
+# B003 — Documentação OpenAPI/Swagger & Postman
 
 ## Objetivo
 Configurar documentação automática da API (OpenAPI/Swagger) e exportá-la para Postman/Redoc, garantindo atualização contínua.
@@ -17,7 +17,7 @@ Configurar documentação automática da API (OpenAPI/Swagger) e exportá-la par
 5. Atualizar `docs/README.md` com link para endpoints (Swagger UI, Redoc, Postman collection).
 
 ## Testes
-- Rodar `python manage.py spectacular --file schema.yaml` e verificar warnings.
+- Rodar `docker compose exec backend python manage.py spectacular --file schema.yaml` e verificar warnings.
 - Testar acesso às rotas `/api/schema/swagger-ui/` e `/api/schema/redoc/` manualmente.
 - Executar script de export Postman e validar arquivo gerado.
 
@@ -25,8 +25,10 @@ Configurar documentação automática da API (OpenAPI/Swagger) e exportá-la par
 - ✅ Schema gerado sem warnings.
 - ✅ Swagger UI/Redoc acessíveis.
 - ✅ Postman collection gerada e commitada.
-- ✅ README atualizado (links).
+- ✅ README atualizado (links para Swagger/Redoc/Postman) e docs relevantes.
 - ✅ Registrar comandos executados no README do plano.
+- ✅ Comunicar aos times que toda nova task backend deve atualizar doc (regras reforçadas nos checklists individuais).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

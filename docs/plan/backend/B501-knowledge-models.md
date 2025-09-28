@@ -18,15 +18,16 @@ Implementar models/migrations do módulo `knowledge` (quick replies, categories,
    - `increment_article_usage(article, kind)` (para analytics futuros).
 
 ## Testes
-- `pytest knowledge/tests/test_models.py` — criação artigo/versão, quick reply multi-idioma, portal/sections.
-- `pytest knowledge/tests/test_services.py` — `publish_article`, `increment_article_usage` (com mocks).
-- Seeds: rodar comando (`python manage.py seed_knowledge_demo`) e validar dados criados.
+- `docker compose exec backend pytest knowledge/tests/test_models.py` — criação artigo/versão, quick reply multi-idioma, portal/sections.
+- `docker compose exec backend pytest knowledge/tests/test_services.py` — `publish_article`, `increment_article_usage` (com mocks).
+- Seeds: rodar comando (`docker compose exec backend python manage.py seed_knowledge_demo`) e validar dados criados.
 
 ## Checklist ao concluir
 - ✅ Tests knowledge passando.
 - ✅ Seeds executáveis e idempotentes.
 - ✅ README do plano atualizado com status/comandos.
 - ✅ Verificar `docs/modules/knowledge.md`/`docs/03-modelo-dados.md` caso haja ajustes.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

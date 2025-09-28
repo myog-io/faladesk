@@ -16,13 +16,14 @@ Implementar serviços de negócio para mensagens internas, presença, sessões d
 3. Seeds atualizados para usar serviços (canais e sessions).
 
 ## Testes
-- `pytest internal_chat/tests/test_services.py` — mensagens, voz, presença.
+- `docker compose exec backend pytest internal_chat/tests/test_services.py` — mensagens, voz, presença.
 - Mocks para analytics/notificações/gamificação.
 
 ## Checklist ao concluir
 - ✅ Tests passando.
 - ✅ Serviços integrados com seeds.
 - ✅ README plano atualizado.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

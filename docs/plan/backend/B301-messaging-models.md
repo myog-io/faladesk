@@ -16,14 +16,15 @@ Implementar models/migrations do módulo `messaging` (conversations, messages, a
 4. Preparar signals para atualização de `Conversation.last_message_at`, `first_response_at`, `closed_at` (sem lógica complexa).
 
 ## Testes
-- `pytest messaging/tests/test_models.py` (criação conversation/message, constraints, state updates).
-- Teste de seeds (comando `python manage.py seed_messaging_demo`).
+- `docker compose exec backend pytest messaging/tests/test_models.py` (criação conversation/message, constraints, state updates).
+- Teste de seeds (comando `docker compose exec backend python manage.py seed_messaging_demo`).
 
 ## Checklist ao concluir
-- ✅ Tests passando (`pytest messaging/tests/test_models.py`).
+- ✅ Tests passando (`docker compose exec backend pytest messaging/tests/test_models.py`).
 - ✅ Seeds executáveis sem duplicar dados.
 - ✅ README do plano atualizado com status/comandos.
 - ✅ Atualizar `docs/03-modelo-dados.md` se ajustes forem necessários.
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`

@@ -12,13 +12,13 @@ Configurar infraestrutura básica de serviços (Celery, Channels, serviços seed
    - Gamificação (regras/níveis/badges padrão).
    - Notificações (templates/regras padrão).
    - Automation intake flow básico.
-4. Atualizar `docker-compose` com workers (celery worker/beat) e channel layer.
+4. Atualizar `docker compose` com workers (celery worker/beat) e channel layer.
 5. Documentar no README comandos `docker compose` para iniciar backend e workers.
 
 ## Pontos de Atenção
 - Respeitar seeds obrigatórios descritos em `development_guidelines.md` (Gamificação, Notificações, Automation).
 - Garantir idempotência dos seeds (safe re-run).
-- Validar que stack sobe via `docker-compose up` executando workers + backend.
+- Validar que stack sobe via `docker compose up` executando workers + backend.
 
 ## Referências
 - `docs/development_guidelines.md`

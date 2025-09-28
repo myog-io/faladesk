@@ -11,16 +11,17 @@ Configurar suíte de testes ponta-a-ponta cobrindo fluxos críticos (ingestão m
    - `e2e/knowledge_portal.spec`: publica artigo, consulta portal público, registra feedback.
    - `e2e/internal_chat.spec`: troca mensagens internas, DM, voice stub join/leave.
 3. Fixtures: scripts para seed ambiente antes de rodar (usar seeds existentes). Config `PLAYWRIGHT_BASE_URL`.
-4. Integrar e2e na pipeline (workflow `ci-e2e.yml`) que sobe stack via docker-compose e roda `npm run e2e`.
+4. Integrar e2e na pipeline (workflow `ci-e2e.yml`) que sobe stack via docker compose e roda `npm run e2e`.
 
 ## Testes
-- Rodar local (`npm run e2e`) apontando para docker-compose up.
+- Rodar local (`npm run e2e`) apontando para docker compose up.
 - Garantir pipeline CI executa e2e (talvez nightly se pesado).
 
 ## Checklist ao concluir
 - ✅ e2e rodando local.
 - ✅ Pipeline e2e configurado.
 - ✅ README plano atualizado + docs (talvez `docs/testing.md`).
+- ✅ Documentar/atualizar endpoints via tarefa B003 (OpenAPI/Postman).
 
 ## Referências
 - `docs/development_guidelines.md`
