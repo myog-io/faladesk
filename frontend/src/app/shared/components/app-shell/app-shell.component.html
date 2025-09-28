@@ -1,0 +1,55 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" type="overlay">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Faladesk</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item button routerLink="/workspace" routerDirection="root">
+            <ion-icon slot="start" name="chatbubbles-outline"></ion-icon>
+            <ion-label>Inbox</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-item button (click)="toggleTheme()">
+            <ion-icon slot="start" name="moon-outline"></ion-icon>
+            <ion-label>{{ darkMode ? 'Tema claro' : 'Tema escuro' }}</ion-label>
+          </ion-item>
+          <ion-item button (click)="signOut()">
+            <ion-icon slot="start" name="log-out-outline"></ion-icon>
+            <ion-label>{{ 'layout.logout' | transloco }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+  <div class="shell" id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Faladesk</ion-title>
+        <ion-buttons slot="end">
+          <ion-chip *ngIf="user$ | async as user">
+            <ion-avatar>
+              <img *ngIf="user.avatarUrl; else initials" [src]="user.avatarUrl" alt="Avatar" />
+              <ng-template #initials>
+                <div class="initials">{{ user.fullName?.[0] || user.email?.[0] }}</div>
+              </ng-template>
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ user.fullName || user.email }}</h2>
+              <p>{{ user.email }}</p>
+            </ion-label>
+          </ion-chip>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-router-outlet></ion-router-outlet>
+    </ion-content>
+  </div>
+</ion-split-pane>

@@ -1,0 +1,10 @@
+.auth-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+ion-card {
+  width: min(420px, 100%);
+}

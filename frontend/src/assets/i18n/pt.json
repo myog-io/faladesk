@@ -1,0 +1,26 @@
+{
+  "auth": {
+    "title": "Acessar Faladesk",
+    "magicLink": {
+      "request": {
+        "heading": "Enviar link mágico",
+        "description": "Informe seu e-mail corporativo para receber o link de acesso.",
+        "email": "E-mail",
+        "submit": "Enviar link",
+        "success": "Link enviado! Verifique sua caixa de entrada.",
+        "error": "Não foi possível enviar o link. Tente novamente mais tarde."
+      },
+      "confirm": {
+        "heading": "Validar link mágico",
+        "description": "Cole o token recebido por e-mail para finalizar o acesso.",
+        "token": "Token",
+        "submit": "Confirmar acesso",
+        "error": "Token inválido ou expirado."
+      }
+    }
+  },
+  "layout": {
+    "welcome": "Bem-vindo(a), {{name}}",
+    "logout": "Sair"
+  }
+}
