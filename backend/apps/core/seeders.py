@@ -5,6 +5,121 @@ from dataclasses import dataclass
 
 from django.apps import apps
 
+from shared.utils.tenant import tenant_context
+
+DEFAULT_CORE_PERMISSIONS = [
+    {
+        "code": "core.roles.view",
+        "description": "Permite listar papéis e permissões do tenant.",
+        "category": "admin",
+    },
+    {
+        "code": "core.roles.manage",
+        "description": "Permite criar, atualizar e remover papéis.",
+        "category": "admin",
+    },
+    {
+        "code": "organizations.view",
+        "description": "Permite visualizar unidades organizacionais.",
+        "category": "admin",
+    },
+    {
+        "code": "organizations.manage",
+        "description": "Permite gerenciar unidades organizacionais.",
+        "category": "admin",
+    },
+    {
+        "code": "messaging.view",
+        "description": "Permite acessar conversas e mensagens.",
+        "category": "messaging",
+    },
+    {
+        "code": "messaging.manage",
+        "description": "Permite gerenciar conversas, filas e atribuições.",
+        "category": "messaging",
+    },
+    {
+        "code": "tickets.view",
+        "description": "Permite visualizar tickets e históricos.",
+        "category": "tickets",
+    },
+    {
+        "code": "tickets.manage",
+        "description": "Permite atualizar status e automações de tickets.",
+        "category": "tickets",
+    },
+    {
+        "code": "analytics.view",
+        "description": "Permite visualizar dashboards e indicadores.",
+        "category": "analytics",
+    },
+    {
+        "code": "automation.manage",
+        "description": "Permite criar e publicar fluxos de automação.",
+        "category": "automation",
+    },
+]
+
+DEFAULT_CORE_ROLES = [
+    {
+        "name": "Administrador",
+        "slug": "admin",
+        "description": "Acesso total ao tenant.",
+        "scope": "global",
+        "is_system": True,
+        "permissions": [
+            "core.roles.view",
+            "core.roles.manage",
+            "organizations.view",
+            "organizations.manage",
+            "messaging.view",
+            "messaging.manage",
+            "tickets.view",
+            "tickets.manage",
+            "analytics.view",
+            "automation.manage",
+        ],
+    },
+    {
+        "name": "Supervisor",
+        "slug": "supervisor",
+        "description": "Coordena equipes e filas de atendimento.",
+        "scope": "team",
+        "is_system": True,
+        "permissions": [
+            "core.roles.view",
+            "organizations.view",
+            "messaging.manage",
+            "tickets.manage",
+            "analytics.view",
+        ],
+    },
+    {
+        "name": "Agente",
+        "slug": "agent",
+        "description": "Atende conversas e tickets atribuídos.",
+        "scope": "global",
+        "is_system": True,
+        "permissions": ["messaging.view", "tickets.view"],
+    },
+    {
+        "name": "Financeiro",
+        "slug": "finance",
+        "description": "Consulta relatórios financeiros e métricas.",
+        "scope": "global",
+        "is_system": True,
+        "permissions": ["analytics.view"],
+    },
+    {
+        "name": "Developer",
+        "slug": "developer",
+        "description": "Integrações e automações avançadas.",
+        "scope": "global",
+        "is_system": True,
+        "permissions": ["core.roles.view", "automation.manage"],
+    },
+]
+
 logger = logging.getLogger(__name__)
 
 
@@ -220,7 +335,86 @@ def seed_automation_defaults() -> SeedResult:
 
 def run_all_seeders() -> list[SeedResult]:
     return [
+        *seed_core_rbac(),
         seed_gamification_defaults(),
         seed_notification_defaults(),
         seed_automation_defaults(),
     ]
+
+
+def _seed_permissions_for_tenant() -> SeedResult:
+    from apps.core.models import Permission
+
+    created = 0
+    updated = 0
+
+    for perm in DEFAULT_CORE_PERMISSIONS:
+        defaults = {
+            "description": perm.get("description", ""),
+            "category": perm.get("category", "admin"),
+        }
+        _obj, created_flag = Permission.objects.update_or_create(
+            code=perm["code"],
+            defaults=defaults,
+        )
+        if created_flag:
+            created += 1
+        else:
+            updated += 1
+
+    return SeedResult("core.permissions", created=created, updated=updated)
+
+
+def _seed_roles_for_tenant(tenant) -> SeedResult:
+    from apps.core.models import Permission, Role
+
+    created = 0
+    updated = 0
+
+    for role_data in DEFAULT_CORE_ROLES:
+        permission_codes = role_data.get("permissions", [])
+        permissions = list(
+            Permission.objects.filter(code__in=permission_codes)
+        )
+        defaults = {
+            "name": role_data["name"],
+            "description": role_data.get("description", ""),
+            "scope": role_data.get("scope", "global"),
+            "is_system": role_data.get("is_system", False),
+        }
+        role, created_flag = Role.objects.update_or_create(
+            tenant=tenant,
+            slug=role_data["slug"],
+            defaults=defaults,
+        )
+        role.permissions.set(permissions)
+        if created_flag:
+            created += 1
+        else:
+            updated += 1
+
+    return SeedResult("core.roles", created=created, updated=updated)
+
+
+def seed_core_rbac(tenant=None) -> list[SeedResult]:
+    from apps.core.models import Tenant
+
+    tenants = [tenant] if tenant is not None else list(Tenant.objects.all())
+    if not tenants:
+        return [
+            SeedResult(
+                "core.rbac",
+                skipped=True,
+                reason="Nenhum tenant encontrado para aplicar seeds.",
+            )
+        ]
+
+    results: list[SeedResult] = []
+    for tenant_obj in tenants:
+        with tenant_context(tenant_obj):
+            perm_result = _seed_permissions_for_tenant()
+            perm_result.namespace = f"core.permissions[{tenant_obj.slug}]"
+            role_result = _seed_roles_for_tenant(tenant_obj)
+            role_result.namespace = f"core.roles[{tenant_obj.slug}]"
+            results.extend([perm_result, role_result])
+    return results

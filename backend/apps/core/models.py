@@ -15,6 +15,7 @@ from django.utils.translation import gettext_lazy as _
 from django_tenants.models import DomainMixin, TenantMixin
 
 from shared.mixins import TimeStampedModel
+from shared.utils import generate_slug
 
 
 class UserManager(BaseUserManager):
@@ -277,6 +278,143 @@ class TenantInvitation(TimeStampedModel):
         self.status = self.Status.ACCEPTED
         self.accepted_at = timezone.now()
         self.save(update_fields=["status", "accepted_at", "updated_at"])
+
+
+class Permission(TimeStampedModel):
+    class Category(models.TextChoices):
+        AUTH = "auth", _("Autenticação")
+        MESSAGING = "messaging", _("Mensageria")
+        TICKETS = "tickets", _("Tickets")
+        AUTOMATION = "automation", _("Automações")
+        ANALYTICS = "analytics", _("Analytics")
+        ADMIN = "admin", _("Administração")
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    code = models.CharField(max_length=150, unique=True)
+    description = models.TextField(blank=True)
+    category = models.CharField(
+        max_length=32,
+        choices=Category.choices,
+        default=Category.AUTH,
+    )
+
+    class Meta:
+        verbose_name = "Permissão"
+        verbose_name_plural = "Permissões"
+
+    def __str__(self) -> str:  # pragma: no cover - representação simples
+        return self.code
+
+
+class Role(TimeStampedModel):
+    class Scope(models.TextChoices):
+        GLOBAL = "global", _("Global")
+        DEPARTMENT = "department", _("Departamento")
+        TEAM = "team", _("Equipe")
+        TICKET_QUEUE = "ticket_queue", _("Fila de tickets")
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey(
+        Tenant,
+        related_name="roles",
+        on_delete=models.CASCADE,
+    )
+    name = models.CharField(max_length=150)
+    slug = models.SlugField()
+    description = models.TextField(blank=True)
+    scope = models.CharField(
+        max_length=32,
+        choices=Scope.choices,
+        default=Scope.GLOBAL,
+    )
+    is_system = models.BooleanField(default=False)
+    permissions = models.ManyToManyField(
+        Permission,
+        through="RolePermission",
+        related_name="roles",
+    )
+
+    class Meta:
+        verbose_name = "Papel"
+        verbose_name_plural = "Papéis"
+        unique_together = (("tenant", "slug"), ("tenant", "name"))
+
+    def save(self, *args: object, **kwargs: object) -> None:
+        if self.tenant_id and not self.slug:
+            queryset = Role.objects.filter(tenant=self.tenant)
+            if self.pk:
+                queryset = queryset.exclude(pk=self.pk)
+            self.slug = generate_slug(self.name, queryset=queryset)
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:  # pragma: no cover - representação simples
+        return f"{self.name} ({self.tenant.slug})"
+
+
+class RolePermission(TimeStampedModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    role = models.ForeignKey(
+        Role,
+        related_name="role_permissions",
+        on_delete=models.CASCADE,
+    )
+    permission = models.ForeignKey(
+        Permission,
+        related_name="role_permissions",
+        on_delete=models.CASCADE,
+    )
+    constraints = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        verbose_name = "Permissão de Papel"
+        verbose_name_plural = "Permissões de Papel"
+        unique_together = ("role", "permission")
+
+    def __str__(self) -> str:  # pragma: no cover - representação simples
+        return f"{self.role.slug}:{self.permission.code}"
+
+
+class RoleAssignment(TimeStampedModel):
+    class ScopeType(models.TextChoices):
+        GLOBAL = "global", _("Global")
+        DEPARTMENT = "department", _("Departamento")
+        TEAM = "team", _("Equipe")
+        CONVERSATION = "conversation", _("Conversa")
+        TICKET = "ticket", _("Ticket")
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant_user = models.ForeignKey(
+        "TenantUser",
+        related_name="role_assignments",
+        on_delete=models.CASCADE,
+    )
+    role = models.ForeignKey(
+        Role,
+        related_name="assignments",
+        on_delete=models.CASCADE,
+    )
+    scope_type = models.CharField(
+        max_length=32,
+        choices=ScopeType.choices,
+        null=True,
+        blank=True,
+    )
+    scope_id = models.UUIDField(null=True, blank=True)
+    effective_from = models.DateTimeField(null=True, blank=True)
+    effective_to = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Atribuição de Papel"
+        verbose_name_plural = "Atribuições de Papel"
+        unique_together = ("tenant_user", "role", "scope_type", "scope_id")
+
+    def is_active(self) -> bool:
+        now = timezone.now()
+        if self.effective_from and self.effective_from > now:
+            return False
+        if self.effective_to and self.effective_to < now:
+            return False
+        return True
 
 
 class ServiceAccount(TimeStampedModel):
