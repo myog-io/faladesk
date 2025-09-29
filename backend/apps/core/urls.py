@@ -4,6 +4,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from .views import (
+    AuditLogViewSet,
     MagicLinkRequestView,
     PermissionViewSet,
     RoleAssignmentViewSet,
@@ -17,6 +18,7 @@ router = DefaultRouter()
 router.register("roles", RoleViewSet, basename="role")
 router.register("permissions", PermissionViewSet, basename="permission")
 router.register("role-assignments", RoleAssignmentViewSet, basename="role-assignment")
+router.register("audit/logs", AuditLogViewSet, basename="audit-log")
 
 urlpatterns = [
     path("auth/magic-link", MagicLinkRequestView.as_view(), name="magic-link"),

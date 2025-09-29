@@ -7,6 +7,8 @@ from django.apps import apps
 
 from shared.utils.tenant import tenant_context
 
+from .services.audit import log_event
+
 DEFAULT_CORE_PERMISSIONS = [
     {
         "code": "core.roles.view",
@@ -16,6 +18,11 @@ DEFAULT_CORE_PERMISSIONS = [
     {
         "code": "core.roles.manage",
         "description": "Permite criar, atualizar e remover papéis.",
+        "category": "admin",
+    },
+    {
+        "code": "audit.view",
+        "description": "Permite consultar registros de auditoria.",
         "category": "admin",
     },
     {
@@ -70,6 +77,7 @@ DEFAULT_CORE_ROLES = [
         "permissions": [
             "core.roles.view",
             "core.roles.manage",
+            "audit.view",
             "organizations.view",
             "organizations.manage",
             "messaging.view",
@@ -417,4 +425,16 @@ def seed_core_rbac(tenant=None) -> list[SeedResult]:
             role_result = _seed_roles_for_tenant(tenant_obj)
             role_result.namespace = f"core.roles[{tenant_obj.slug}]"
             results.extend([perm_result, role_result])
+            log_event(
+                tenant_id=tenant_obj,
+                actor="system",
+                event="core.seeds.initial_seed",
+                payload={
+                    "permissions_created": perm_result.created,
+                    "permissions_updated": perm_result.updated,
+                    "roles_created": role_result.created,
+                    "roles_updated": role_result.updated,
+                    "skipped": perm_result.skipped or role_result.skipped,
+                },
+            )
     return results

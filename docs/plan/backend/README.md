@@ -14,7 +14,7 @@
 ## Fase 1 — Core (Auth/RBAC/Audit)
 - ✅ B101 — Modelos Core & Autenticação
 - ✅ B102 — RBAC & Escopo Multi-Tenant
-- B103 — Auditoria Estruturada
+- ✅ B103 — Auditoria Estruturada
 
 ## Fase 2 — Organizations & SLA
 - B201 — Models Organizations & SLA Básico
@@ -72,3 +72,6 @@
 ### Histórico de Comandos — B102
 - `python manage.py makemigrations core` _(falhou: dependências Django indisponíveis no ambiente de avaliação)_
 - `pytest backend/apps/core/tests/test_roles.py` _(falhou: dependências Django indisponíveis no ambiente de avaliação)_
+
+### Histórico de Comandos — B103
+- `pytest backend/apps/core/tests/test_audit.py` _(falhou: dependências Django indisponíveis no ambiente de avaliação)_
