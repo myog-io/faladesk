@@ -60,6 +60,7 @@ PUBLIC_SCHEMA_NAME = "public"
 
 MIDDLEWARE = [
     "django_tenants.middleware.main.TenantMainMiddleware",
+    "shared.middleware.request_context.RequestContextMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -203,14 +204,14 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "verbose": {
-            "format": "%(asctime)s [%(levelname)s] %(name)s %(message)s",
+        "json": {
+            "()": "shared.logging.JsonLogFormatter",
         }
     },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-            "formatter": "verbose",
+            "formatter": "json",
         }
     },
     "root": {

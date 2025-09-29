@@ -6,7 +6,8 @@ from dataclasses import dataclass
 from typing import Optional
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from ..models import AuditLog, LoginToken, Tenant, TenantUser
+from ..models import LoginToken, Tenant, TenantUser
+from .audit import log_event
 
 
 @dataclass
@@ -48,9 +49,9 @@ def issue_magic_link(
     )
     magic_link = f"{scheme}://{host}/auth/magic?token={login_token.token}"
 
-    AuditLog.objects.create(
-        tenant=tenant,
-        actor_user=tenant_user.user,
+    log_event(
+        tenant_id=tenant,
+        actor=tenant_user.user,
         event="auth.magic_link_requested",
         payload={"email": tenant_user.user.email, "link": magic_link},
         ip_address=login_token.ip_address,
@@ -74,9 +75,9 @@ def exchange_magic_link_token(*, tenant: Tenant, login_token: LoginToken) -> dic
     if tenant_user:
         tenant_user.activate()
 
-    AuditLog.objects.create(
-        tenant=tenant,
-        actor_user=login_token.user,
+    log_event(
+        tenant_id=tenant,
+        actor=login_token.user,
         event="auth.magic_link_exchanged",
         payload={"token_id": str(login_token.id)},
         ip_address=login_token.ip_address,

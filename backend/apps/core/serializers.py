@@ -4,8 +4,10 @@ from __future__ import annotations
 
 from django.utils import timezone
 from rest_framework import serializers
+from typing import Any, Optional
 
 from .models import (
+    AuditLog,
     LoginToken,
     Permission,
     Role,
@@ -20,6 +22,47 @@ from .models import (
     TenantUserPreference,
     User,
 )
+from .services.audit import log_event
+
+
+class AuditLogSerializerMixin:
+    """Mixin utilitário para registrar eventos de auditoria a partir de serializers."""
+
+    def _resolve_request(self, explicit_request=None):
+        if explicit_request is not None:
+            return explicit_request
+        return self.context.get("request") if hasattr(self, "context") else None
+
+    def log_audit_event(
+        self,
+        *,
+        tenant,
+        event: str,
+        payload: Optional[dict[str, Any]] = None,
+        actor: Any = None,
+        fallback_actor: Any = None,
+        request=None,
+        **extra,
+    ):
+        """Encapsula a chamada ao serviço de auditoria reaproveitando o contexto."""
+
+        resolved_request = self._resolve_request(request)
+        resolved_actor = actor
+
+        if resolved_actor is None and resolved_request is not None:
+            resolved_actor = getattr(resolved_request, "user", None)
+
+        if resolved_actor is None:
+            resolved_actor = fallback_actor
+
+        return log_event(
+            tenant_id=tenant,
+            actor=resolved_actor,
+            event=event,
+            payload=payload,
+            request=resolved_request,
+            **extra,
+        )
 
 
 class TenantSerializer(serializers.ModelSerializer):
@@ -157,7 +200,7 @@ class ServiceAccountKeySerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "key_id", "hashed_secret", "created_at")
 
 
-class ServiceAccountSerializer(serializers.ModelSerializer):
+class ServiceAccountSerializer(AuditLogSerializerMixin, serializers.ModelSerializer):
     keys = ServiceAccountKeySerializer(many=True, read_only=True)
 
     class Meta:
@@ -174,6 +217,38 @@ class ServiceAccountSerializer(serializers.ModelSerializer):
             "keys",
         )
         read_only_fields = ("id", "created_at", "updated_at")
+
+    def create(self, validated_data: dict):
+        service_account: ServiceAccount = super().create(validated_data)
+        self.log_audit_event(
+            tenant=service_account.tenant,
+            event="core.service_accounts.created",
+            payload={
+                "service_account_id": str(service_account.id),
+                "name": service_account.name,
+                "status": service_account.status,
+            },
+            fallback_actor=validated_data.get("created_by"),
+        )
+        return service_account
+
+    def update(self, instance: ServiceAccount, validated_data: dict):
+        old_status = instance.status
+        service_account: ServiceAccount = super().update(instance, validated_data)
+        payload = {
+            "service_account_id": str(service_account.id),
+            "name": service_account.name,
+            "status": service_account.status,
+        }
+        if old_status != service_account.status:
+            payload["previous_status"] = old_status
+        self.log_audit_event(
+            tenant=service_account.tenant,
+            event="core.service_accounts.updated",
+            payload=payload,
+            fallback_actor=service_account.created_by,
+        )
+        return service_account
 
 
 class LoginTokenSerializer(serializers.ModelSerializer):
@@ -329,7 +404,7 @@ class RoleAssignmentCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data: dict):
         role: Role = self.context["role"]
-        assignment, _created = RoleAssignment.objects.update_or_create(
+        assignment, created = RoleAssignment.objects.update_or_create(
             tenant_user=validated_data["tenant_user"],
             role=role,
             scope_type=validated_data.get("scope_type"),
@@ -339,6 +414,7 @@ class RoleAssignmentCreateSerializer(serializers.ModelSerializer):
                 "effective_to": validated_data.get("effective_to"),
             },
         )
+        self._created = created  # type: ignore[attr-defined]
         return assignment
 
 
@@ -382,3 +458,38 @@ class LoginTokenVerificationSerializer(serializers.Serializer):
 
         attrs["token_instance"] = token
         return attrs
+
+
+class AuditLogSerializer(serializers.ModelSerializer):
+    actor = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AuditLog
+        fields = (
+            "id",
+            "event",
+            "payload",
+            "recorded_at",
+            "actor",
+            "ip_address",
+            "user_agent",
+        )
+        read_only_fields = fields
+
+    def get_actor(self, obj: AuditLog) -> Optional[dict[str, Any]]:
+        if obj.actor_user_id:
+            return {
+                "type": "user",
+                "id": str(obj.actor_user_id),
+                "email": getattr(obj.actor_user, "email", None),
+                "name": getattr(obj.actor_user, "full_name", None),
+            }
+        if obj.actor_service_account_id:
+            return {
+                "type": "service_account",
+                "id": str(obj.actor_service_account_id),
+                "name": getattr(obj.actor_service_account, "name", None),
+            }
+        if isinstance(obj.payload, dict) and obj.payload.get("actor_label"):
+            return {"type": "label", "value": obj.payload["actor_label"]}
+        return None
